@@ -1,0 +1,24 @@
+#!/bin/sh
+# TESS_DATA should refer to the directory in which Tesseract data files are placed.
+#TESS_DATA=~/tesseract
+#TESS_DATA=/usr/local/tesseract
+TESS_DATA=.
+
+# TESS_BIN should refer to the directory in which Tesseract executable files are placed.
+TESS_BIN=${TESS_DATA}/bin_unix
+
+# TESS_OPTIONS contains any command line options you would like to start Tesseract with.
+#TESS_OPTIONS=""
+TESS_OPTIONS="-u${HOME}/.tesseract"
+
+# SYSTEM_NAME should be set to the name of your operating system.
+#SYSTEM_NAME=Linux
+SYSTEM_NAME=`uname -s`
+
+# MACHINE_NAME should be set to the name of your processor.
+#MACHINE_NAME=i686
+MACHINE_NAME=`uname -m`
+
+cd ${TESS_DATA}
+exec ${TESS_BIN}/tesseract ${TESS_OPTIONS} "$@"
+
