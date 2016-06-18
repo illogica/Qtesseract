@@ -51,6 +51,7 @@ unix{
 win32 {
 
     CONFIG += windows
+    CONFIG-=embed_manifest_exe
 
     !contains(QMAKE_TARGET.arch, x86_64) {
 
