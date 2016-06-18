@@ -9,7 +9,7 @@ CONFIG += exceptions_off
 
 CONFIG += c++14
 
-!contains(QMAKESPEC, "msvc"){
+contains(QMAKESPEC, "g++"){
 
     win32 { #statinc linking for mingw builds
         QMAKE_LFLAGS += -static-libgcc -static-libstdc++
@@ -35,7 +35,6 @@ INCLUDEPATH += src/engine \
         bin
 
 unix{
-
     libenet.commands = cd $$PWD/src/enet && $(MAKE) -f Makefile
 
     QMAKE_EXTRA_TARGETS += libenet
@@ -50,12 +49,6 @@ unix{
 }
 
 win32 {
-
-    LIBS += -lopengl32
-    LIBS += -lws2_32
-    LIBS += -lwinmm
-    LIBS += -lkernel32
-    LIBS += -luser32
 
     CONFIG += windows
 
@@ -81,6 +74,13 @@ win32 {
         LIBS += "$$PWD/src/lib64/SDL2_mixer.lib"# -lSDL2_mixer
         LIBS += "$$PWD/src/lib64/zdll.lib"# -lzdll
     }
+
+
+    LIBS += -lopengl32
+    LIBS += -lws2_32
+    LIBS += -lwinmm
+    LIBS += -lkernel32
+    LIBS += -luser32
 }
 
 SOURCES += src/shared/crypto.cpp \
