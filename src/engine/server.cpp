@@ -3,6 +3,10 @@
 
 #include "engine.h"
 
+#include "qserver.h"
+
+Qserver *qserver;
+
 #define LOGSTRLEN 512
 
 static FILE *logfile = NULL;
@@ -1090,6 +1094,8 @@ void initserver(bool listen, bool dedicated)
     if(listen) setuplistenserver(dedicated);
 
     server::serverinit();
+
+    qserver = new Qserver();
 
     if(listen)
     {

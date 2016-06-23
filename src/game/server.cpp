@@ -13,6 +13,9 @@
 #include "projectilestate.h"
 #include "servstate.h"
 #include "savedscore.h"
+#include "qserver.h"
+
+#include <QString>
 
 namespace game
 {
@@ -30,6 +33,7 @@ namespace game
 }
 
 extern ENetAddress masteraddress;
+extern Qserver *qserver;
 
 namespace server
 {
@@ -2456,6 +2460,8 @@ namespace server
                         ci->connectauth = disc;
                     }
                     else connected(ci);
+
+                    qserver->on_N_CONNECT(ci, QString(password), QString(authdesc), QString(authname));
                     break;
                 }
 

@@ -30,6 +30,7 @@ DEFINES -= UNICODE
 INCLUDEPATH += src/engine \
         src/game \
         src/shared \
+        src/qt \
         "src/include" \
         "src/enet/include" \
         bin
@@ -148,7 +149,8 @@ SOURCES += src/shared/crypto.cpp \
     src/shared/vec2.cpp \
     src/shared/vec4.cpp \
     src/game/aiinfo.cpp \
-    src/game/aistate.cpp
+    src/game/aistate.cpp \
+    src/qt/qserver.cpp
 #    src/qt/hooks.cpp
 
 HEADERS +=  src/shared/cube.h \
@@ -220,7 +222,8 @@ HEADERS +=  src/shared/cube.h \
     src/shared/defs.h \
     src/game/enums.h \
     src/game/enumsai.h \
-    src/shared/comparison.h
+    src/shared/comparison.h \
+    src/qt/qserver.h
 #   src/qt/hooks.h
 
 
