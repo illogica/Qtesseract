@@ -2,25 +2,7 @@
 #define __GAME_H__
 
 #include "cube.h"
-
-// animations
-
-enum
-{
-    ANIM_DEAD = ANIM_GAMESPECIFIC, ANIM_DYING,
-    ANIM_IDLE, ANIM_RUN_N, ANIM_RUN_NE, ANIM_RUN_E, ANIM_RUN_SE, ANIM_RUN_S, ANIM_RUN_SW, ANIM_RUN_W, ANIM_RUN_NW,
-    ANIM_JUMP, ANIM_JUMP_N, ANIM_JUMP_NE, ANIM_JUMP_E, ANIM_JUMP_SE, ANIM_JUMP_S, ANIM_JUMP_SW, ANIM_JUMP_W, ANIM_JUMP_NW,
-    ANIM_SINK, ANIM_SWIM,
-    ANIM_CROUCH, ANIM_CROUCH_N, ANIM_CROUCH_NE, ANIM_CROUCH_E, ANIM_CROUCH_SE, ANIM_CROUCH_S, ANIM_CROUCH_SW, ANIM_CROUCH_W, ANIM_CROUCH_NW,
-    ANIM_CROUCH_JUMP, ANIM_CROUCH_JUMP_N, ANIM_CROUCH_JUMP_NE, ANIM_CROUCH_JUMP_E, ANIM_CROUCH_JUMP_SE, ANIM_CROUCH_JUMP_S, ANIM_CROUCH_JUMP_SW, ANIM_CROUCH_JUMP_W, ANIM_CROUCH_JUMP_NW,
-    ANIM_CROUCH_SINK, ANIM_CROUCH_SWIM,
-    ANIM_SHOOT, ANIM_MELEE,
-    ANIM_PAIN,
-    ANIM_EDIT, ANIM_LAG, ANIM_TAUNT, ANIM_WIN, ANIM_LOSE,
-    ANIM_GUN_IDLE, ANIM_GUN_SHOOT, ANIM_GUN_MELEE,
-    ANIM_VWEP_IDLE, ANIM_VWEP_SHOOT, ANIM_VWEP_MELEE,
-    NUMANIMS
-};
+#include "enums.h"
 
 static const char * const animnames[] =
 {
@@ -39,68 +21,18 @@ static const char * const animnames[] =
     "vwep idle", "vwep shoot", "vwep melee"
 };
 
-// console message types
-
-enum
-{
-    CON_CHAT       = 1<<8,
-    CON_TEAMCHAT   = 1<<9,
-    CON_GAMEINFO   = 1<<10,
-    CON_FRAG_SELF  = 1<<11,
-    CON_FRAG_OTHER = 1<<12,
-    CON_TEAMKILL   = 1<<13
-};
-
 // network quantization scale
 #define DMF 16.0f                // for world locations
 #define DNF 100.0f              // for normalized vectors
 #define DVELF 1.0f              // for playerspeed based velocity vectors
 
-enum                            // static entity types
-{
-    NOTUSED = ET_EMPTY,         // entity slot not in use in map
-    LIGHT = ET_LIGHT,           // lightsource, attr1 = radius, attr2 = intensity
-    MAPMODEL = ET_MAPMODEL,     // attr1 = idx, attr2 = yaw, attr3 = pitch, attr4 = roll, attr5 = scale
-    PLAYERSTART,                // attr1 = angle, attr2 = team
-    ENVMAP = ET_ENVMAP,         // attr1 = radius
-    PARTICLES = ET_PARTICLES,
-    MAPSOUND = ET_SOUND,
-    SPOTLIGHT = ET_SPOTLIGHT,
-    DECAL = ET_DECAL,
-    TELEPORT,                   // attr1 = idx, attr2 = model, attr3 = tag
-    TELEDEST,                   // attr1 = angle, attr2 = idx
-    JUMPPAD,                    // attr1 = zpush, attr2 = ypush, attr3 = xpush
-    FLAG,                       // attr1 = angle, attr2 = team
-    MAXENTTYPES,
-
-    I_FIRST = 0,
-    I_LAST = -1
-};
-
 struct gameentity : extentity
 {
 };
 
-enum { GUN_RAIL = 0, GUN_PULSE, NUMGUNS };
-enum { ACT_IDLE = 0, ACT_SHOOT, ACT_MELEE, NUMACTS };
-enum { ATK_RAIL_SHOOT = 0, ATK_RAIL_MELEE, ATK_PULSE_SHOOT, ATK_PULSE_MELEE, NUMATKS };
-
 #define validgun(n) ((n) >= 0 && (n) < NUMGUNS)
 #define validact(n) ((n) >= 0 && (n) < NUMACTS)
 #define validatk(n) ((n) >= 0 && (n) < NUMATKS)
-
-enum
-{
-    M_TEAM       = 1<<0,
-    M_CTF        = 1<<1,
-    M_OVERTIME   = 1<<2,
-    M_EDIT       = 1<<3,
-    M_DEMO       = 1<<4,
-    M_LOCAL      = 1<<5,
-    M_LOBBY      = 1<<6,
-    M_RAIL       = 1<<7,
-    M_PULSE      = 1<<8
-};
 
 static struct gamemodeinfo
 {
@@ -141,61 +73,10 @@ static struct gamemodeinfo
 #define m_botmode      (m_checknot(gamemode, M_DEMO|M_LOCAL))
 #define m_mp(mode)     (m_checknot(mode, M_LOCAL))
 
-enum { MM_AUTH = -1, MM_OPEN = 0, MM_VETO, MM_LOCKED, MM_PRIVATE, MM_PASSWORD, MM_START = MM_AUTH, MM_INVALID = MM_START - 1 };
-
 static const char * const mastermodenames[] =  { "auth",   "open",   "veto",       "locked",     "private",    "password" };
 static const char * const mastermodecolors[] = { "",       "\f0",    "\f2",        "\f2",        "\f3",        "\f3" };
 static const char * const mastermodeicons[] =  { "server", "server", "serverlock", "serverlock", "serverpriv", "serverpriv" };
 
-// hardcoded sounds, defined in sounds.cfg
-enum
-{
-    S_JUMP = 0, S_LAND,
-    S_SPLASHIN, S_SPLASHOUT, S_BURN,
-    S_ITEMSPAWN, S_TELEPORT, S_JUMPPAD,
-    S_MELEE, S_PULSE1, S_PULSE2, S_PULSEEXPLODE, S_RAIL1, S_RAIL2,
-    S_WEAPLOAD, S_NOAMMO, S_HIT,
-    S_PAIN1, S_PAIN2, S_DIE1, S_DIE2,
-
-    S_FLAGPICKUP,
-    S_FLAGDROP,
-    S_FLAGRETURN,
-    S_FLAGSCORE,
-    S_FLAGRESET,
-    S_FLAGFAIL
-};
-
-// network messages codes, c2s, c2c, s2c
-
-enum { PRIV_NONE = 0, PRIV_MASTER, PRIV_AUTH, PRIV_ADMIN };
-
-enum
-{
-    N_CONNECT = 0, N_SERVINFO, N_WELCOME, N_INITCLIENT, N_POS, N_TEXT, N_SOUND, N_CDIS,
-    N_SHOOT, N_EXPLODE, N_SUICIDE,
-    N_DIED, N_DAMAGE, N_HITPUSH, N_SHOTFX, N_EXPLODEFX,
-    N_TRYSPAWN, N_SPAWNSTATE, N_SPAWN, N_FORCEDEATH,
-    N_GUNSELECT, N_TAUNT,
-    N_MAPCHANGE, N_MAPVOTE, N_TEAMINFO, N_ITEMSPAWN, N_ITEMPICKUP, N_ITEMACC, N_TELEPORT, N_JUMPPAD,
-    N_PING, N_PONG, N_CLIENTPING,
-    N_TIMEUP, N_FORCEINTERMISSION,
-    N_SERVMSG, N_ITEMLIST, N_RESUME,
-    N_EDITMODE, N_EDITENT, N_EDITF, N_EDITT, N_EDITM, N_FLIP, N_COPY, N_PASTE, N_ROTATE, N_REPLACE, N_DELCUBE, N_CALCLIGHT, N_REMIP, N_EDITVSLOT, N_UNDO, N_REDO, N_NEWMAP, N_GETMAP, N_SENDMAP, N_CLIPBOARD, N_EDITVAR,
-    N_MASTERMODE, N_KICK, N_CLEARBANS, N_CURRENTMASTER, N_SPECTATOR, N_SETMASTER, N_SETTEAM,
-    N_LISTDEMOS, N_SENDDEMOLIST, N_GETDEMO, N_SENDDEMO,
-    N_DEMOPLAYBACK, N_RECORDDEMO, N_STOPDEMO, N_CLEARDEMOS,
-    N_TAKEFLAG, N_RETURNFLAG, N_RESETFLAG, N_TRYDROPFLAG, N_DROPFLAG, N_SCOREFLAG, N_INITFLAGS,
-    N_SAYTEAM,
-    N_CLIENT,
-    N_AUTHTRY, N_AUTHKICK, N_AUTHCHAL, N_AUTHANS, N_REQAUTH,
-    N_PAUSEGAME, N_GAMESPEED,
-    N_ADDBOT, N_DELBOT, N_INITAI, N_FROMAI, N_BOTLIMIT, N_BOTBALANCE,
-    N_MAPCRC, N_CHECKMAPS,
-    N_SWITCHNAME, N_SWITCHMODEL, N_SWITCHCOLOR, N_SWITCHTEAM,
-    N_SERVCMD,
-    N_DEMOPACKET,
-    NUMMSG
-};
 
 static const int msgsizes[] =               // size inclusive message token, 0 for variable or not-checked sizes
 {
@@ -240,18 +121,6 @@ struct demoheader
 
 #define MAXNAMELEN 15
 
-enum
-{
-    HICON_RED_FLAG = 0,
-    HICON_BLUE_FLAG,
-
-    HICON_X       = 20,
-    HICON_Y       = 1650,
-    HICON_TEXTY   = 1644,
-    HICON_STEP    = 490,
-    HICON_SIZE    = 120,
-    HICON_SPACE   = 40
-};
 
 #if 0
 static struct itemstat { int add, max, sound; const char *name; int icon, info; } itemstats[] =
@@ -282,64 +151,7 @@ static const struct guninfo { const char *name, *file, *vwep; int attacks[NUMACT
 
 #include "ai.h"
 
-// inherited by gameent and server clients
-struct gamestate
-{
-    int health, maxhealth;
-    int gunselect, gunwait;
-    int ammo[NUMGUNS];
-    int aitype, skill;
-
-    gamestate() : maxhealth(1), aitype(AI_NONE), skill(0) {}
-
-    bool canpickup(int type)
-    {
-        return validitem(type);
-    }
-
-    void pickup(int type)
-    {
-    }
-
-    void respawn()
-    {
-        health = maxhealth;
-        gunselect = GUN_RAIL;
-        gunwait = 0;
-        loopi(NUMGUNS) ammo[i] = 0;
-    }
-
-    void spawnstate(int gamemode)
-    {
-        if(m_rail)
-        {
-            gunselect = GUN_RAIL;
-            ammo[GUN_RAIL] = 1;
-        }
-        else if(m_pulse)
-        {
-            gunselect = GUN_PULSE;
-            ammo[GUN_PULSE] = 1;
-        }
-        else if(m_edit)
-        {
-            gunselect = GUN_RAIL;
-            loopi(NUMGUNS) ammo[i] = 1;
-        }
-    }
-
-    // just subtract damage here, can set death, etc. later in code calling this
-    int dodamage(int damage)
-    {
-        health -= damage;
-        return damage;
-    }
-
-    int hasammo(int gun, int exclude = -1)
-    {
-        return validgun(gun) && gun != exclude && ammo[gun] > 0;
-    }
-};
+#include "gamestate.h"
 
 #define MAXTEAMS 2
 static const char * const teamnames[1+MAXTEAMS] = { "", "azul", "rojo" };
@@ -351,71 +163,7 @@ static inline int teamnumber(const char *name) { loopi(MAXTEAMS) if(!strcmp(team
 #define validteam(n) ((n) >= 1 && (n) <= MAXTEAMS)
 #define teamname(n) (teamnames[validteam(n) ? (n) : 0])
 
-struct gameent : dynent, gamestate
-{
-    int weight;                         // affects the effectiveness of hitpush
-    int clientnum, privilege, lastupdate, plag, ping;
-    int lifesequence;                   // sequence id for each respawn, used in damage test
-    int respawned, suicided;
-    int lastpain;
-    int lastaction, lastattack;
-    int attacking;
-    int lasttaunt;
-    int lastpickup, lastpickupmillis, flagpickup;
-    int frags, flags, deaths, totaldamage, totalshots;
-    editinfo *edit;
-    float deltayaw, deltapitch, deltaroll, newyaw, newpitch, newroll;
-    int smoothmillis;
-
-    string name, info;
-    int team, playermodel, playercolor;
-    ai::aiinfo *ai;
-    int ownernum, lastnode;
-
-    vec muzzle;
-
-    gameent() : weight(100), clientnum(-1), privilege(PRIV_NONE), lastupdate(0), plag(0), ping(0), lifesequence(0), respawned(-1), suicided(-1), lastpain(0), frags(0), flags(0), deaths(0), totaldamage(0), totalshots(0), edit(NULL), smoothmillis(-1), team(0), playermodel(-1), playercolor(0), ai(NULL), ownernum(-1), muzzle(-1, -1, -1)
-    {
-        name[0] = info[0] = 0;
-        respawn();
-    }
-    ~gameent()
-    {
-        freeeditinfo(edit);
-        if(ai) delete ai;
-    }
-
-    void hitpush(int damage, const vec &dir, gameent *actor, int atk)
-    {
-        vec push(dir);
-        push.mul((actor==this && attacks[atk].exprad ? EXP_SELFPUSH : 1.0f)*attacks[atk].hitpush*damage/weight);
-        vel.add(push);
-    }
-
-    void respawn()
-    {
-        dynent::reset();
-        gamestate::respawn();
-        respawned = suicided = -1;
-        lastaction = 0;
-        lastattack = -1;
-        attacking = ACT_IDLE;
-        lasttaunt = 0;
-        lastpickup = -1;
-        lastpickupmillis = 0;
-        flagpickup = 0;
-        lastnode = -1;
-    }
-
-    void startgame()
-    {
-        frags = flags = deaths = 0;
-        totaldamage = totalshots = 0;
-        maxhealth = 1;
-        lifesequence = -1;
-        respawned = suicided = -2;
-    }
-};
+#include "gameent.h"
 
 struct teamscore
 {

@@ -5,6 +5,10 @@ struct gameent;
 enum { AI_NONE = 0, AI_BOT, AI_MAX };
 #define isaitype(a) (a >= 0 && a <= AI_MAX-1)
 
+#include "aistate.h"
+#include "aiinfo.h"
+#include "enumsai.h"
+
 namespace ai
 {
     const int MAXWAYPOINTS = USHRT_MAX - 2;
@@ -135,149 +139,12 @@ namespace ai
     extern void loadwaypoints(bool force = false, const char *mname = NULL);
     extern void savewaypoints(bool force = false, const char *mname = NULL);
 
-    // ai state information for the owner client
-    enum
-    {
-        AI_S_WAIT = 0,      // waiting for next command
-        AI_S_DEFEND,        // defend goal target
-        AI_S_PURSUE,        // pursue goal target
-        AI_S_INTEREST,      // interest in goal entity
-        AI_S_MAX
-    };
-
-    enum
-    {
-        AI_T_NODE,
-        AI_T_PLAYER,
-        AI_T_AFFINITY,
-        AI_T_ENTITY,
-        AI_T_MAX
-    };
-
     struct interest
     {
         int state, node, target, targtype;
         float score;
         interest() : state(-1), node(-1), target(-1), targtype(-1), score(0.f) {}
         ~interest() {}
-    };
-
-    struct aistate
-    {
-        int type, millis, targtype, target, idle;
-        bool override;
-
-        aistate(int m, int t, int r = -1, int v = -1) : type(t), millis(m), targtype(r), target(v)
-        {
-            reset();
-        }
-        ~aistate() {}
-
-        void reset()
-        {
-            idle = 0;
-            override = false;
-        }
-    };
-
-    const int NUMPREVNODES = 6;
-
-    struct aiinfo
-    {
-        vector<aistate> state;
-        vector<int> route;
-        vec target, spot;
-        int enemy, enemyseen, enemymillis, weappref, prevnodes[NUMPREVNODES], targnode, targlast, targtime, targseq,
-            lastrun, lasthunt, lastaction, lastcheck, jumpseed, jumprand, blocktime, huntseq, blockseq, lastaimrnd;
-        float targyaw, targpitch, views[3], aimrnd[3];
-        bool dontmove, becareful, tryreset, trywipe;
-
-        aiinfo()
-        {
-            clearsetup();
-            reset();
-            loopk(3) views[k] = 0.f;
-        }
-        ~aiinfo() {}
-
-        void clearsetup()
-        {
-            weappref = GUN_RAIL;
-            spot = target = vec(0, 0, 0);
-            lastaction = lasthunt = lastcheck = enemyseen = enemymillis = blocktime = huntseq = blockseq = targtime = targseq = lastaimrnd = 0;
-            lastrun = jumpseed = lastmillis;
-            jumprand = lastmillis+5000;
-            targnode = targlast = enemy = -1;
-        }
-
-        void clear(bool prev = false)
-        {
-            if(prev) memset(prevnodes, -1, sizeof(prevnodes));
-            route.setsize(0);
-        }
-
-        void wipe(bool prev = false)
-        {
-            clear(prev);
-            state.setsize(0);
-            addstate(AI_S_WAIT);
-            trywipe = false;
-        }
-
-        void clean(bool tryit = false)
-        {
-            if(!tryit) becareful = dontmove = false;
-            targyaw = rnd(360);
-            targpitch = 0.f;
-            tryreset = tryit;
-        }
-
-        void reset(bool tryit = false) { wipe(); clean(tryit); }
-
-        bool hasprevnode(int n) const
-        {
-            loopi(NUMPREVNODES) if(prevnodes[i] == n) return true;
-            return false;
-        }
-
-        void addprevnode(int n)
-        {
-            if(prevnodes[0] != n)
-            {
-                memmove(&prevnodes[1], prevnodes, sizeof(prevnodes) - sizeof(prevnodes[0]));
-                prevnodes[0] = n;
-            }
-        }
-
-        aistate &addstate(int t, int r = -1, int v = -1)
-        {
-            return state.add(aistate(lastmillis, t, r, v));
-        }
-
-        void removestate(int index = -1)
-        {
-            if(index < 0) state.pop();
-            else if(state.inrange(index)) state.remove(index);
-            if(!state.length()) addstate(AI_S_WAIT);
-        }
-
-        aistate &getstate(int idx = -1)
-        {
-            if(state.inrange(idx)) return state[idx];
-            return state.last();
-        }
-
-        aistate &switchstate(aistate &b, int t, int r = -1, int v = -1)
-        {
-            if((b.type == t && b.targtype == r) || (b.type == AI_S_INTEREST && b.targtype == AI_T_NODE))
-            {
-                b.millis = lastmillis;
-                b.target = v;
-                b.reset();
-                return b;
-            }
-            return addstate(t, r, v);
-        }
     };
 
     extern avoidset obstacles;

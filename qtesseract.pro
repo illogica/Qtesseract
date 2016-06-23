@@ -134,7 +134,21 @@ SOURCES += src/shared/crypto.cpp \
     src/game/server.cpp \
     src/game/waypoint.cpp \
     src/game/weapon.cpp \
-    src/game/client.cpp
+    src/game/client.cpp \
+    src/game/gamestate.cpp \
+    src/game/servstate.cpp \
+    src/game/savedscore.cpp \
+    src/game/clientinfo.cpp \
+    src/shared/physent.cpp \
+    src/shared/dynent.cpp \
+    src/shared/animinfo.cpp \
+    src/shared/animinterpinfo.cpp \
+    src/game/gameent.cpp \
+    src/shared/vec.cpp \
+    src/shared/vec2.cpp \
+    src/shared/vec4.cpp \
+    src/game/aiinfo.cpp \
+    src/game/aistate.cpp
 #    src/qt/hooks.cpp
 
 HEADERS +=  src/shared/cube.h \
@@ -174,7 +188,39 @@ HEADERS +=  src/shared/cube.h \
     src/game/ai.h \
     src/game/ctf.h \
     src/game/extinfo.h \
-    src/game/aiman.h
+    src/game/aiman.h \
+    src/shared/qtesseract.h \
+    src/game/server_entity.h \
+    src/game/gameevent.h \
+    src/game/timedevent.h \
+    src/game/hitinfo.h \
+    src/game/shotevent.h \
+    src/game/explodeevent.h \
+    src/game/suicideevent.h \
+    src/game/pickupevent.h \
+    src/game/projectilestate.h \
+    src/game/gamestate.h \
+    src/game/servstate.h \
+    src/game/savedscore.h \
+    src/game/clientinfo.h \
+    src/game/ban.h \
+    src/shared/physent.h \
+    src/shared/dynent.h \
+    src/shared/animinfo.h \
+    src/shared/animinterpinfo.h \
+    src/game/gameent.h \
+    src/shared/vec.h \
+    src/shared/vec2.h \
+    src/shared/vec4.h \
+    src/shared/loops.h \
+    src/shared/vector.h \
+    src/shared/typedefs.h \
+    src/game/aiinfo.h \
+    src/game/aistate.h \
+    src/shared/defs.h \
+    src/game/enums.h \
+    src/game/enumsai.h \
+    src/shared/comparison.h
 #   src/qt/hooks.h
 
 
