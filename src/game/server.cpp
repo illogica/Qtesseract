@@ -2471,6 +2471,9 @@ namespace server
                     getstring(desc, p, sizeof(desc));
                     uint id = (uint)getint(p);
                     getstring(ans, p, sizeof(ans));
+
+                    qserver->on_N_AUTHANS(ci, QString(desc), QString(ans), id);
+
                     if(!answerchallenge(ci, id, ans, desc))
                     {
                         disconnect_client(sender, ci->connectauth);
@@ -2481,6 +2484,7 @@ namespace server
 
                 case N_PING:
                     getint(p);
+                    qserver->on_N_PING(ci);
                     break;
 
                 default:
@@ -2546,6 +2550,9 @@ namespace server
                     cp->state.o = pos;
                     cp->gameclip = (flags&0x80)!=0;
                 }
+
+                qserver->on_N_POS(ci, cp, pos, mag, dir, vel);
+
                 break;
             }
 
@@ -2559,6 +2566,9 @@ namespace server
                     flushclientposition(*cp);
                     sendf(-1, 0, "ri4x", N_TELEPORT, pcn, teleport, teledest, cp->ownernum);
                 }
+
+                qserver->on_N_TELEPORT(ci, cp, teleport, teledest);
+
                 break;
             }
 
@@ -2573,6 +2583,9 @@ namespace server
                     flushclientposition(*cp);
                     sendf(-1, 0, "ri3x", N_JUMPPAD, pcn, jumppad, cp->ownernum);
                 }
+
+                qserver->on_N_JUMPPAD(ci, cp, jumppad);
+
                 break;
             }
 
@@ -2585,6 +2598,9 @@ namespace server
                     cq = getinfo(qcn);
                     if(cq && qcn != sender && cq->ownernum != sender) cq = NULL;
                 }
+
+                qserver->on_N_FROMAI(ci, cq);
+
                 break;
             }
 
@@ -2607,6 +2623,9 @@ namespace server
                 }
                 else ci->state.state = ci->state.editstate;
                 QUEUE_MSG;
+
+                qserver->on_N_EDITMODE(ci, val);
+
                 break;
             }
 
@@ -2629,11 +2648,15 @@ namespace server
                 ci->mapcrc = text[0] ? crc : 1;
                 checkmaps();
                 if(cq && cq != ci && cq->ownernum != ci->clientnum) cq = NULL;
+
+                qserver->on_N_MAPCRC(ci, crc, QString(text));
+
                 break;
             }
 
             case N_CHECKMAPS:
                 checkmaps(sender);
+                qserver->on_N_CHECKMAPS(ci);
                 break;
 
             case N_TRYSPAWN:

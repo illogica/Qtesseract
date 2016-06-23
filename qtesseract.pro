@@ -23,7 +23,7 @@ contains(QMAKESPEC, "g++"){
 
 RC_FILE += $$PWD/src/vcpp/mingw.rc
 
-QT += gui network sql
+QT += gui network sql qml
 
 DEFINES -= UNICODE
 
