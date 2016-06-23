@@ -8,6 +8,7 @@
 #include "typedefs.h"
 #include "ban.h"
 #include "vector.h"
+#include "clientinfo.h"
 
 namespace server{
 
@@ -17,9 +18,6 @@ namespace server{
     extern string smapname;
     extern vector<uint> allowedips;
     extern vector<ban> bannedips;
-
-    //forward declarations
-    class clientinfo;
 }
 
 

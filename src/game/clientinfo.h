@@ -1,6 +1,7 @@
 #ifndef CLIENTINFO_H
 #define CLIENTINFO_H
 
+#include <QObject>
 #include "vec.h"
 #include "vector.h"
 #include "servstate.h"
@@ -15,10 +16,11 @@ namespace server{
 
     extern int gamemillis, nextexceeded;
 
-    class clientinfo
+    class clientinfo : public QObject
     {
+        Q_OBJECT
     public:
-        clientinfo();
+        clientinfo(QObject *parent = 0);
         ~clientinfo();
 
         void addevent(gameevent *e);

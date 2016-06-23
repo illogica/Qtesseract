@@ -6,7 +6,7 @@
 
 namespace server{
 
-    clientinfo::clientinfo() :  getdemo(NULL), getmap(NULL), clipboard(NULL), authchallenge(NULL), authkickreason(NULL)
+    clientinfo::clientinfo(QObject *parent) :  QObject(parent), getdemo(NULL), getmap(NULL), clipboard(NULL), authchallenge(NULL), authkickreason(NULL)
     {
         reset();
     }
