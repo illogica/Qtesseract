@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QString>
 #include <QJSEngine>
+#include <QHash>
+#include <QList>
 #include "jsloader.h"
 #include "vec.h"
 #include "typedefs.h"
@@ -20,6 +22,17 @@ namespace server{
     extern vector<uint> allowedips;
     extern vector<ban> bannedips;
 }
+
+/**
+ * @brief The EventData struct
+ * A simple data structure store events registered by javascript
+ */
+struct EventData
+{
+    EventData(QString n, bool b) : jsFunctionName(n), bypass(b){}
+    QString jsFunctionName;
+    bool bypass;
+};
 
 
 /**
@@ -45,6 +58,9 @@ public slots:
     //slot called when the JSLoader has detected a change in file system
     void reloadJs(QStringList &sources);
 
+    //called from js code to register event hooks
+    void registerHook(int event, QString functionName, bool bypass);
+
     void testPrint();
     void testSprint(const QString s);
 
@@ -61,6 +77,7 @@ public slots:
 
 private:
     JSLoader* jsLoader;
+    QHash<int, QList<EventData> > eventsMap;
 };
 
 #endif // QSERVER_H

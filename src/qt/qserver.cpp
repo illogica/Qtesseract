@@ -8,17 +8,40 @@ Qserver::Qserver(QObject *parent) : QObject(parent)
     srv = js.newQObject(this);
     js.installExtensions(QJSEngine::ConsoleExtension | QJSEngine::GarbageCollectionExtension);
     js.globalObject().setProperty("server", srv);
-    js.evaluate("server.testPrint();");
+    /*js.evaluate("server.testPrint();");
     js.evaluate("server.testSprint('You should see this at the console...');");
+    */
 
-    jsLoader = new JSLoader();
+    jsLoader = new JSLoader(this);
     connect(jsLoader, SIGNAL(jsSourcesChanged(QStringList&)), this, SLOT(reloadJs(QStringList&)));
     jsLoader->init();
+
 }
 
 void Qserver::reloadJs(QStringList &sources)
 {
-    qDebug() << "received source";
+    eventsMap.clear();
+
+    for( QString s : sources ){
+        QJSValue result = js.evaluate(s);
+        if (result.isError())
+            qDebug()
+                    << "Uncaught exception at line"
+                    << result.property("lineNumber").toInt()
+                    << ":" << result.toString();
+    }
+}
+
+void Qserver::registerHook(int event, QString functionName, bool bypass)
+{
+    if(!eventsMap.contains(event)){
+        QList<EventData> emptyList;
+        eventsMap.insert(event, emptyList);
+    }
+
+    //EventData *ed = new EventData(functionName, bypass);
+    EventData ed(functionName, bypass);
+    eventsMap[event].append(ed);
 }
 
 void Qserver::on_N_CONNECT(server::clientinfo *ci, QString password, QString authdesc, QString authname)
