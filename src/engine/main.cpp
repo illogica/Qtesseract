@@ -1071,6 +1071,11 @@ int main(int argc, char **argv)
 
     logoutf("init: game");
     game::parseoptions(gameargs);
+
+    //Initialize the QApplication here
+    QApplication app(argc, argv);
+    app.processEvents();
+
     initserver(dedicated>0, dedicated>1);  // never returns if dedicated
     ASSERT(dedicated <= 1);
     game::initclient();

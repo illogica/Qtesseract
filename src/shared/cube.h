@@ -16,7 +16,7 @@
 #undef gamma
 #endif
 
-#include <QCoreApplication>
+#include <QApplication>
 
 #include <string.h>
 #include <stdio.h>

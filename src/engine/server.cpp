@@ -2,6 +2,7 @@
 // runs dedicated or as client coroutine
 
 #include "engine.h"
+#include <QDebug>
 
 #include "qserver.h"
 
@@ -630,6 +631,10 @@ void updatetime()
 
 void serverslice(bool dedicated, uint timeout)   // main server update, called from main loop in sp, or from below in dedicated server
 {
+    //Process all Qt events, instead of calling exec() which is blocking.
+    QApplication::instance()->processEvents();
+    logoutf("serverslice %s", __TIME__);
+
     if(!serverhost)
     {
         server::serverupdate();

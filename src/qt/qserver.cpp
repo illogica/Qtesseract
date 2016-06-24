@@ -10,6 +10,15 @@ Qserver::Qserver(QObject *parent) : QObject(parent)
     js.globalObject().setProperty("server", srv);
     js.evaluate("server.testPrint();");
     js.evaluate("server.testSprint('You should see this at the console...');");
+
+    jsLoader = new JSLoader();
+    connect(jsLoader, SIGNAL(jsSourcesChanged(QStringList&)), this, SLOT(reloadJs(QStringList&)));
+    jsLoader->init();
+}
+
+void Qserver::reloadJs(QStringList &sources)
+{
+    qDebug() << "received source";
 }
 
 void Qserver::on_N_CONNECT(server::clientinfo *ci, QString password, QString authdesc, QString authname)

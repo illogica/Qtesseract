@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QJSEngine>
+#include "jsloader.h"
 #include "vec.h"
 #include "typedefs.h"
 #include "ban.h"
@@ -41,6 +42,9 @@ signals:
 
 public slots:
 
+    //slot called when the JSLoader has detected a change in file system
+    void reloadJs(QStringList &sources);
+
     void testPrint();
     void testSprint(const QString s);
 
@@ -54,6 +58,9 @@ public slots:
     void on_N_EDITMODE(server::clientinfo *ci, int val);
     void on_N_MAPCRC(server::clientinfo *ci, int crc, QString mapname);
     void on_N_CHECKMAPS(server::clientinfo *ci);
+
+private:
+    JSLoader* jsLoader;
 };
 
 #endif // QSERVER_H

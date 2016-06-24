@@ -23,7 +23,7 @@ contains(QMAKESPEC, "g++"){
 
 RC_FILE += $$PWD/src/vcpp/mingw.rc
 
-QT += gui network sql qml
+QT += gui network sql qml widgets
 
 DEFINES -= UNICODE
 
@@ -150,7 +150,8 @@ SOURCES += src/shared/crypto.cpp \
     src/shared/vec4.cpp \
     src/game/aiinfo.cpp \
     src/game/aistate.cpp \
-    src/qt/qserver.cpp
+    src/qt/qserver.cpp \
+    src/qt/jsloader.cpp
 #    src/qt/hooks.cpp
 
 HEADERS +=  src/shared/cube.h \
@@ -223,8 +224,13 @@ HEADERS +=  src/shared/cube.h \
     src/game/enums.h \
     src/game/enumsai.h \
     src/shared/comparison.h \
-    src/qt/qserver.h
+    src/qt/qserver.h \
+    src/qt/jsloader.h
 #   src/qt/hooks.h
+
+DISTFILES += \
+    src/js/001-startup.js \
+    src/js/999-test.js
 
 
 
