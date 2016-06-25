@@ -9,6 +9,7 @@
 #include <GL/gl.h>
 #include <SDL.h>
 #include <zlib.h>
+#include <QString>
 
 #include "typedefs.h"
 #include "loops.h"
@@ -88,6 +89,13 @@ static inline int bitscan(uint mask)
 #else
 #define PRINTFARGS(fmt, args)
 #endif
+
+/*char * qstrtochar(QString s){
+    QByteArray local8Bit = s.toLocal8Bit();
+    char *cdata = local8Bit.data();
+    return cdata;
+}*/
+
 
 inline void vformatstring(char *d, const char *fmt, va_list v, int len) { _vsnprintf(d, len, fmt, v); d[len-1] = 0; }
 template<size_t N> inline void vformatstring(char (&d)[N], const char *fmt, va_list v) { vformatstring(d, fmt, v, N); }
@@ -983,6 +991,7 @@ extern float getfloat(ucharbuf &p);
 extern void sendstring(const char *t, ucharbuf &p);
 extern void sendstring(const char *t, packetbuf &p);
 extern void sendstring(const char *t, vector<uchar> &p);
+//extern void sendqstring(QString &t, packetbuf &p);
 extern void getstring(char *t, ucharbuf &p, size_t len);
 template<size_t N> static inline void getstring(char (&t)[N], ucharbuf &p) { getstring(t, p, N); }
 extern void filtertext(char *dst, const char *src, bool whitespace, bool forcespace, size_t len);

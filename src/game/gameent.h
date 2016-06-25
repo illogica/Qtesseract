@@ -13,6 +13,8 @@ extern void freeeditinfo(editinfo *&e);
 
 class gameent : public dynent, public gamestate
 {
+    Q_GADGET
+
 public:
     gameent();
     ~gameent();
@@ -42,5 +44,7 @@ public:
 
     vec muzzle;
 };
+
+Q_DECLARE_METATYPE(gameent)
 
 #endif // GAMEENT_H

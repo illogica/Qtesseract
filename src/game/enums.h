@@ -2,7 +2,18 @@
 #define ENUMS_H
 
 // ET_*: the only static entity types dictated by the engine... rest are gamecode dependent
-enum { ET_EMPTY=0, ET_LIGHT, ET_MAPMODEL, ET_PLAYERSTART, ET_ENVMAP, ET_PARTICLES, ET_SOUND, ET_SPOTLIGHT, ET_DECAL, ET_GAMESPECIFIC };
+enum StaticEntities{
+    ET_EMPTY=0,
+    ET_LIGHT,
+    ET_MAPMODEL,
+    ET_PLAYERSTART,
+    ET_ENVMAP,
+    ET_PARTICLES,
+    ET_SOUND,
+    ET_SPOTLIGHT,
+    ET_DECAL,
+    ET_GAMESPECIFIC
+};
 
 enum
 {
@@ -18,9 +29,9 @@ enum
 
 };
 
-enum { CS_ALIVE = 0, CS_DEAD, CS_SPAWNING, CS_LAGGED, CS_EDITING, CS_SPECTATOR };
+enum ClientState{ CS_ALIVE = 0, CS_DEAD, CS_SPAWNING, CS_LAGGED, CS_EDITING, CS_SPECTATOR };
 
-enum { PHYS_FLOAT = 0, PHYS_FALL, PHYS_SLIDE, PHYS_SLOPE, PHYS_FLOOR, PHYS_STEP_UP, PHYS_STEP_DOWN, PHYS_BOUNCE };
+enum PhysicalState{ PHYS_FLOAT = 0, PHYS_FALL, PHYS_SLIDE, PHYS_SLOPE, PHYS_FLOOR, PHYS_STEP_UP, PHYS_STEP_DOWN, PHYS_BOUNCE };
 
 enum { ENT_PLAYER = 0, ENT_CAMERA, ENT_BOUNCE };
 
@@ -33,7 +44,7 @@ enum
 };
 
 // animations
-enum
+enum Animations
 {
     ANIM_DEAD = ANIM_GAMESPECIFIC, ANIM_DYING,
     ANIM_IDLE, ANIM_RUN_N, ANIM_RUN_NE, ANIM_RUN_E, ANIM_RUN_SE, ANIM_RUN_S, ANIM_RUN_SW, ANIM_RUN_W, ANIM_RUN_NW,
@@ -51,7 +62,7 @@ enum
 };
 
 // console message types
-enum
+enum Console
 {
     CON_CHAT       = 1<<8,
     CON_TEAMCHAT   = 1<<9,
@@ -61,7 +72,7 @@ enum
     CON_TEAMKILL   = 1<<13
 };
 
-enum                            // static entity types
+enum Entities                           // static entity types
 {
     NOTUSED = ET_EMPTY,         // entity slot not in use in map
     LIGHT = ET_LIGHT,           // lightsource, attr1 = radius, attr2 = intensity
@@ -82,11 +93,11 @@ enum                            // static entity types
     I_LAST = -1
 };
 
-enum { GUN_RAIL = 0, GUN_PULSE, NUMGUNS };
-enum { ACT_IDLE = 0, ACT_SHOOT, ACT_MELEE, NUMACTS };
-enum { ATK_RAIL_SHOOT = 0, ATK_RAIL_MELEE, ATK_PULSE_SHOOT, ATK_PULSE_MELEE, NUMATKS };
+enum Weapons { GUN_RAIL = 0, GUN_PULSE, NUMGUNS };
+enum Actions { ACT_IDLE = 0, ACT_SHOOT, ACT_MELEE, NUMACTS };
+enum Attacks { ATK_RAIL_SHOOT = 0, ATK_RAIL_MELEE, ATK_PULSE_SHOOT, ATK_PULSE_MELEE, NUMATKS };
 
-enum
+enum GameModes
 {
     M_TEAM       = 1<<0,
     M_CTF        = 1<<1,
@@ -100,7 +111,7 @@ enum
 };
 
 // hardcoded sounds, defined in sounds.cfg
-enum
+enum Sounds
 {
     S_JUMP = 0, S_LAND,
     S_SPLASHIN, S_SPLASHOUT, S_BURN,
@@ -117,13 +128,13 @@ enum
     S_FLAGFAIL
 };
 
-enum { MM_AUTH = -1, MM_OPEN = 0, MM_VETO, MM_LOCKED, MM_PRIVATE, MM_PASSWORD, MM_START = MM_AUTH, MM_INVALID = MM_START - 1 };
+enum MasterMode{ MM_AUTH = -1, MM_OPEN = 0, MM_VETO, MM_LOCKED, MM_PRIVATE, MM_PASSWORD, MM_START = MM_AUTH, MM_INVALID = MM_START - 1 };
 
 // network messages codes, c2s, c2c, s2c
 
-enum { PRIV_NONE = 0, PRIV_MASTER, PRIV_AUTH, PRIV_ADMIN };
+enum Privilege{ PRIV_NONE = 0, PRIV_MASTER, PRIV_AUTH, PRIV_ADMIN };
 
-enum
+enum Network
 {
     N_CONNECT = 0, N_SERVINFO, N_WELCOME, N_INITCLIENT, N_POS, N_TEXT, N_SOUND, N_CDIS,
     N_SHOOT, N_EXPLODE, N_SUICIDE,

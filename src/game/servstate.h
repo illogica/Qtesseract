@@ -1,6 +1,7 @@
 #ifndef SERVSTATE_H
 #define SERVSTATE_H
 
+#include <QObject>
 #include "gamestate.h"
 #include "projectilestate.h"
 
@@ -10,8 +11,10 @@ namespace server{
 
     class servstate : public gamestate
     {
+        Q_GADGET
     public:
         servstate();
+        ~servstate();
         bool isalive(int gamemillis);
         bool waitexpired(int gamemillis);
         void reset();
@@ -29,5 +32,6 @@ namespace server{
     };
 
 }
+Q_DECLARE_METATYPE(server::servstate)
 
 #endif // SERVSTATE_H

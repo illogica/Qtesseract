@@ -11,6 +11,7 @@ struct ragdolldata;
 
 class dynent : public physent // animated characters, or characters that can receive input
 {
+    Q_GADGET
 public:
     dynent();
     ~dynent();
@@ -26,5 +27,7 @@ public:
     occludequery *query;
     int lastrendered;
 };
+
+Q_DECLARE_METATYPE(dynent)
 
 #endif // DYNENT_H

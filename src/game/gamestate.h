@@ -1,13 +1,16 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+#include <QObject>
+
 struct vec;
 
 class gamestate
 {
+    Q_GADGET
 public:
     gamestate();
-    ~gamestate(){}
+    //~gamestate();
 
     bool canpickup(int type);
     void pickup(int type);
@@ -22,5 +25,7 @@ public:
     //int ammo[NUMGUNS];
     int ammo[2];
 };
+
+Q_DECLARE_METATYPE(gamestate)
 
 #endif // GAMESTATE_H

@@ -37,6 +37,8 @@ namespace server{
 class Qserver : public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(int qtestInt MEMBER testInt)
 public:
     explicit Qserver(QObject *parent = 0);
     ~Qserver();

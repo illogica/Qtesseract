@@ -1,6 +1,7 @@
 #ifndef VEC_H
 #define VEC_H
 
+#include <QObject>
 #include "math.h"
 #include "loops.h"
 #include "comparison.h"

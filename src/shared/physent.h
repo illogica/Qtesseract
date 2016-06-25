@@ -5,7 +5,7 @@
 
 class physent
 {
-
+    Q_GADGET
 public:
     physent();
     ~physent(){}
@@ -36,5 +36,7 @@ public:
 
     bool blocked;                               // used by physics to signal ai
 };
+
+Q_DECLARE_METATYPE(physent)
 
 #endif // PHYSENT_H

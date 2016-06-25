@@ -2,7 +2,8 @@
 #include "vec2.h"
 #include "vec4.h"
 
-vec::vec() {}
+vec::vec(){}
+
 vec::vec(int a) : x(a), y(a), z(a) {}
 vec::vec(float a) : x(a), y(a), z(a) {}
 vec::vec(float a, float b, float c) : x(a), y(b), z(c) {}

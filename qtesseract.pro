@@ -228,7 +228,8 @@ HEADERS +=  src/shared/cube.h \
     src/qt/qserver.h \
     src/qt/jsloader.h \
     src/qt/eventdata.h \
-    src/qt/servereventsmap.h
+    src/qt/servereventsmap.h \
+    src/qt/qstringutils.h
 #   src/qt/hooks.h
 
 DISTFILES += \

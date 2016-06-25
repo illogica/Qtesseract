@@ -8,9 +8,9 @@
 namespace server{
 
     servstate::servstate() : state(CS_DEAD), editstate(CS_DEAD), lifesequence(0)
-    {
+    {}
 
-    }
+    servstate::~servstate()  {}
 
     bool servstate::isalive(int gamemillis)
     {

@@ -6,6 +6,8 @@ gamestate::gamestate() : maxhealth(1), aitype(AI_NONE), skill(0)
 
 }
 
+//gamestate::~gamestate(){}
+
 bool gamestate::canpickup(int type)
 {
     return validitem(type);

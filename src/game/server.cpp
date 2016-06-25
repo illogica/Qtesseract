@@ -476,6 +476,15 @@ namespace server
         return false;
     }
 
+    //Added as QString experiment
+    /*bool duplicatename(clientinfo *ci, QString name)
+    {
+        if(!name.isEmpty()) name = ci->name;
+        loopv(clients) if(clients[i]!=ci && (name == clients[i]->name)) return true;
+        return false;
+    }*/
+
+
     const char *colorname(clientinfo *ci, const char *name = NULL)
     {
         if(!name) name = ci->name;
@@ -486,6 +495,17 @@ namespace server
         formatstring(cname[cidx], ci->state.aitype == AI_NONE ? "%s \fs\f5(%d)\fr" : "%s \fs\f5[%d]\fr", name, ci->clientnum);
         return cname[cidx];
     }
+
+    /*const char *colorname(clientinfo *ci, QString name = QString())
+    {
+        if(!name.isEmpty()) name = ci->name;
+        if(!duplicatename(ci, name) && ci->state.aitype == AI_NONE) return qstrtochar(name);
+        static string cname[3];
+        static int cidx = 0;
+        cidx = (cidx+1)%3;
+        formatstring(cname[cidx], ci->state.aitype == AI_NONE ? "%s \fs\f5(%d)\fr" : "%s \fs\f5[%d]\fr", qstrtochar(name), ci->clientnum);
+        return cname[cidx];
+    }*/
 
     struct servmode
     {
@@ -1086,6 +1106,7 @@ namespace server
             {
                 clientinfo *oi = clients[i];
                 if(oi->clientnum != ci->clientnum && getclientip(oi->clientnum) == ip && !strcmp(oi->name, ci->name))
+                //if(oi->clientnum != ci->clientnum && getclientip(oi->clientnum) == ip && (oi->name == ci->name))
                 {
                     oi->state.timeplayed += lastmillis - oi->state.lasttimeplayed;
                     oi->state.lasttimeplayed = lastmillis;
@@ -1098,12 +1119,14 @@ namespace server
         loopv(scores)
         {
             savedscore &sc = scores[i];
-            if(sc.ip == ip && !strcmp(sc.name, ci->name)) return &sc;
+            //if(sc.ip == ip && !strcmp(sc.name, ci->name)) return &sc;
+            if(sc.ip == ip && (sc.name == ci->name)) return &sc;
         }
         if(!insert) return 0;
         savedscore &sc = scores.add();
         sc.ip = ip;
         copystring(sc.name, ci->name);
+        //ci->name = QString(sc.name);
         return &sc;
     }
 
@@ -1377,12 +1400,14 @@ namespace server
             putint(p, ci->playercolor);
             putint(p, ci->team);
             sendstring(ci->name, p);
+            //sendqstring(ci->name, p);
         }
         else
         {
             putint(p, N_INITCLIENT);
             putint(p, ci->clientnum);
             sendstring(ci->name, p);
+            //sendqstring(ci->name, p);
             putint(p, ci->team);
             putint(p, ci->playermodel);
             putint(p, ci->playercolor);
@@ -1664,6 +1689,7 @@ namespace server
             if(!m_valid(oi->modevote)) continue;
             votecount *vc = NULL;
             loopvj(votes) if(!strcmp(oi->mapvote, votes[j].map) && oi->modevote==votes[j].mode)
+            //loopvj(votes) if((oi->mapvote == votes[j].map) && oi->modevote==votes[j].mode)
             {
                 vc = &votes[j];
                 break;

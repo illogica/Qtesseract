@@ -114,6 +114,11 @@ function startup() {
 server.registerHook(Events.N_CONNECT, "onConnect", false);
 
 function onConnect(){
-    server.sendservmsg("OnConnect() inside JS!");
+    server.sendservmsg("OnConnect() inside JS! propTestInt=" + server.qtestInt);
+    server.qtestInt++;
+    server.qtestInt++;
+    server.qtestInt++;
+    server.qtestInt++;
+    server.sendservmsg("OnConnect() inside JS! propTestInt=" + server.qtestInt);
 }
 

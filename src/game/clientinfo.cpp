@@ -1,5 +1,6 @@
 #include "clientinfo.h"
 #include <limits.h>
+#include "qstringutils.h"
 #include "ents.h"
 #include "tools.h"
 
@@ -130,6 +131,28 @@ namespace server{
             return servmillis;
         }
         else return gameoffset + clientmillis;
+    }
+
+    QString clientinfo::_name()
+    {
+        return QString(name);
+    }
+
+    void clientinfo::_setName(const QString &s)
+    {
+        char* result = qstrtochar(s);
+        strcpy(name, result);
+    }
+
+    QString clientinfo::_mapvote()
+    {
+        return QString(mapvote);
+    }
+
+    void clientinfo::_setMapvote(const QString &s)
+    {
+        char* result = qstrtochar(s);
+        strcpy(mapvote, result);
     }
 
 }
