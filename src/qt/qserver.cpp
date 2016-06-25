@@ -5,12 +5,11 @@
 
 Qserver::Qserver(QObject *parent) : QObject(parent)
 {
+    eventsMap = new ServerEventsMap();
+
     srv = js.newQObject(this);
     js.installExtensions(QJSEngine::ConsoleExtension | QJSEngine::GarbageCollectionExtension);
     js.globalObject().setProperty("server", srv);
-    /*js.evaluate("server.testPrint();");
-    js.evaluate("server.testSprint('You should see this at the console...');");
-    */
 
     jsLoader = new JSLoader(this);
     connect(jsLoader, SIGNAL(jsSourcesChanged(QStringList&)), this, SLOT(reloadJs(QStringList&)));
@@ -18,9 +17,19 @@ Qserver::Qserver(QObject *parent) : QObject(parent)
 
 }
 
+Qserver::~Qserver()
+{
+    delete eventsMap;
+}
+
+bool Qserver::hasEvent(int event)
+{
+    return eventsMap->hasEvent(event);
+}
+
 void Qserver::reloadJs(QStringList &sources)
 {
-    eventsMap.clear();
+    eventsMap->clear();
 
     for( QString s : sources ){
         QJSValue result = js.evaluate(s);
@@ -32,16 +41,30 @@ void Qserver::reloadJs(QStringList &sources)
     }
 }
 
+//Called by javascript
 void Qserver::registerHook(int event, QString functionName, bool bypass)
 {
-    if(!eventsMap.contains(event)){
-        QList<EventData> emptyList;
-        eventsMap.insert(event, emptyList);
-    }
-
-    //EventData *ed = new EventData(functionName, bypass);
     EventData ed(functionName, bypass);
-    eventsMap[event].append(ed);
+    eventsMap->registerEvent(event, ed);
+}
+
+void Qserver::runEventHooks(int event)
+{
+    for(EventData ed : eventsMap->getEventData(event)){
+        if(js.globalObject().hasProperty(ed.jsFunctionName)){
+            QJSValue result = js.globalObject().property(ed.jsFunctionName).call();
+            if (result.isError())
+                qDebug()
+                        << "Uncaught exception at line"
+                        << result.property("lineNumber").toInt()
+                        << ":" << result.toString();
+        }
+    }
+}
+
+void Qserver::sendservmsg(QString s)
+{
+    server::sendservmsg(s.toLocal8Bit().data());
 }
 
 void Qserver::on_N_CONNECT(server::clientinfo *ci, QString password, QString authdesc, QString authname)
@@ -92,14 +115,4 @@ void Qserver::on_N_MAPCRC(server::clientinfo *ci, int crc, QString mapname)
 void Qserver::on_N_CHECKMAPS(server::clientinfo *ci)
 {
     qDebug() << "N_CHECKMAPS from " + QString(ci->name);
-}
-
-void Qserver::testPrint()
-{
-    qDebug() << "Called from javascript engine - " << testInt;
-}
-
-void Qserver::testSprint(const QString s)
-{
-    qDebug() << "Called from javascript engine - " << s;
 }

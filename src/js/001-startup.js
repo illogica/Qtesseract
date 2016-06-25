@@ -108,8 +108,12 @@ var Events = {
 
 
 function startup() {
-    console.log("JS startup" + Events.NUM);
+    console.log("JS startup" + Events.N_WELCOME + " hey hey hey!");
 }
 
-server.registerHook(Events.N_CONNECT, "startup", false);
+server.registerHook(Events.N_CONNECT, "onConnect", false);
+
+function onConnect(){
+    server.sendservmsg("OnConnect() inside JS!");
+}
 

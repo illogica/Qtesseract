@@ -2461,7 +2461,13 @@ namespace server
                     }
                     else connected(ci);
 
-                    qserver->on_N_CONNECT(ci, QString(password), QString(authdesc), QString(authname));
+                    //qserver->on_N_CONNECT(ci, QString(password), QString(authdesc), QString(authname));
+                    if(qserver->hasEvent(N_CONNECT)){
+                        logoutf("N_CONNECT");
+                        qserver->runEventHooks(N_CONNECT);
+                    } else {
+                        logoutf("Failed N_CONNECT hook");
+                    }
                     break;
                 }
 

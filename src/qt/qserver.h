@@ -6,7 +6,9 @@
 #include <QJSEngine>
 #include <QHash>
 #include <QList>
+#include "eventdata.h"
 #include "jsloader.h"
+#include "servereventsmap.h"
 #include "vec.h"
 #include "typedefs.h"
 #include "ban.h"
@@ -21,18 +23,9 @@ namespace server{
     extern string smapname;
     extern vector<uint> allowedips;
     extern vector<ban> bannedips;
-}
 
-/**
- * @brief The EventData struct
- * A simple data structure store events registered by javascript
- */
-struct EventData
-{
-    EventData(QString n, bool b) : jsFunctionName(n), bypass(b){}
-    QString jsFunctionName;
-    bool bypass;
-};
+    extern void sendservmsg(const char *s);
+}
 
 
 /**
@@ -46,6 +39,10 @@ class Qserver : public QObject
     Q_OBJECT
 public:
     explicit Qserver(QObject *parent = 0);
+    ~Qserver();
+
+    bool hasEvent(int event);
+    void runEventHooks(int event);
 
     QJSEngine js;
     QJSValue srv;
@@ -61,8 +58,8 @@ public slots:
     //called from js code to register event hooks
     void registerHook(int event, QString functionName, bool bypass);
 
-    void testPrint();
-    void testSprint(const QString s);
+    //server to javascript api
+    void sendservmsg(QString s);
 
     void on_N_CONNECT(server::clientinfo *ci, QString password, QString authdesc, QString authname);
     void on_N_PING(server::clientinfo *ci);
@@ -77,7 +74,7 @@ public slots:
 
 private:
     JSLoader* jsLoader;
-    QHash<int, QList<EventData> > eventsMap;
+    ServerEventsMap *eventsMap;
 };
 
 #endif // QSERVER_H

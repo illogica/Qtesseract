@@ -151,7 +151,8 @@ SOURCES += src/shared/crypto.cpp \
     src/game/aiinfo.cpp \
     src/game/aistate.cpp \
     src/qt/qserver.cpp \
-    src/qt/jsloader.cpp
+    src/qt/jsloader.cpp \
+    src/qt/servereventsmap.cpp
 #    src/qt/hooks.cpp
 
 HEADERS +=  src/shared/cube.h \
@@ -225,7 +226,9 @@ HEADERS +=  src/shared/cube.h \
     src/game/enumsai.h \
     src/shared/comparison.h \
     src/qt/qserver.h \
-    src/qt/jsloader.h
+    src/qt/jsloader.h \
+    src/qt/eventdata.h \
+    src/qt/servereventsmap.h
 #   src/qt/hooks.h
 
 DISTFILES += \

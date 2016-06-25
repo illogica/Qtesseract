@@ -633,7 +633,7 @@ void serverslice(bool dedicated, uint timeout)   // main server update, called f
 {
     //Process all Qt events, instead of calling exec() which is blocking.
     QApplication::instance()->processEvents();
-    logoutf("serverslice %s", __TIME__);
+    //logoutf("serverslice %s", __TIME__);
 
     if(!serverhost)
     {
