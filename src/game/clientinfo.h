@@ -19,9 +19,9 @@ namespace server{
 
     extern int gamemillis, nextexceeded;
 
-    class clientinfo : public QObject
+    class clientinfo
     {
-        Q_OBJECT
+        Q_GADGET
         Q_PROPERTY(int clientnum MEMBER clientnum)
         Q_PROPERTY(int ownernum MEMBER ownernum)
         Q_PROPERTY(int connectmillis MEMBER connectmillis)
@@ -42,10 +42,10 @@ namespace server{
         Q_PROPERTY(int pushed MEMBER pushed)
         Q_PROPERTY(int exceeded MEMBER exceeded)
         Q_PROPERTY(QJSValue state READ _state WRITE _setState)
-
-        Q_PROPERTY(QList<uchar> position READ _position WRITE _setPosition)
-
+        Q_PROPERTY(QJSValue position READ _position WRITE _setPosition)
         Q_PROPERTY(int wslen MEMBER wslen)
+        Q_PROPERTY(QJSValue bots READ _bots WRITE _setBots)
+        Q_PROPERTY(QJSValue events READ _events WRITE _setEvents)
         Q_PROPERTY(int ping MEMBER ping)
         Q_PROPERTY(int aireinit MEMBER aireinit)
         Q_PROPERTY(QString clientmap READ _clientmap WRITE _setClientmap)
@@ -56,6 +56,7 @@ namespace server{
         Q_PROPERTY(int needclipboard MEMBER needclipboard)
         Q_PROPERTY(int connectauth MEMBER connectauth)
         Q_PROPERTY(uint authreq MEMBER authreq)
+        //Q_PROPERTY(int wsdata READ _wsdata WRITE _setWsdata)
         Q_PROPERTY(QString authname READ _authname WRITE _setAuthname)
         Q_PROPERTY(QString authdesc READ _authdesc WRITE _setAuthdesc)
         Q_PROPERTY(int authkickvictim MEMBER authkickvictim)
@@ -92,11 +93,17 @@ namespace server{
         void _setAuthdesc(const QString &s);
         QString _authkickreason();
         void _setAuthkickreason(const QString &s);
-        QList<uchar> _position();
-        void _setPosition(const QList<uchar> &l);
+        QJSValue _position();
+        void _setPosition(const QJSValue &l);
+        /*int _wsdata();
+        void _setWsdata(const int data);*/
+        QJSValue _bots();
+        void _setBots(const QJSValue &l);
+        QJSValue _events();
+        void _setEvents(const QJSValue &l);
 
     public:
-        clientinfo(QObject *parent = 0);
+        clientinfo();
         ~clientinfo();
         enum
         {
@@ -111,11 +118,11 @@ namespace server{
         bool connected, local, timesync;
         int gameoffset, lastevent, pushed, exceeded;
         servstate state;
-        vector<gameevent *> events; // TODO: js bindings
-        vector<uchar> position, messages; // TODO: js bindings
-        uchar *wsdata; // TODO: js bindings
+        vector<gameevent *> events;
+        vector<uchar> position, messages;
+        uchar *wsdata;  //TODO: js bindings??
         int wslen;
-        vector<clientinfo *> bots; // TODO: js bindings
+        vector<clientinfo *> bots;
         int ping, aireinit;
         string clientmap;
         int mapcrc;
@@ -132,7 +139,7 @@ namespace server{
         QJSEngine *engine;
 
     };
-
 }
+Q_DECLARE_METATYPE(server::clientinfo)
 
 #endif // CLIENTINFO_H

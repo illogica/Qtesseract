@@ -126,8 +126,13 @@ function onConnect(arg1, arg2){
     server.sendservmsg("state: " + str);
     server.sendservmsg("state.state: " + arg1.state.state);
     server.sendservmsg("ci.position: " + arg1.position);
+    server.sendservmsg("ci.position.length: " + arg1.position.length);
+    server.sendservmsg("ci.position.constructor.name: " + arg1.position.constructor.name);
     server.sendservmsg("ci.state: " + arg1.state);
-    server.sendservmsg("ci: " + arg1);
+    server.sendservmsg("ci.bots: " + arg1.bots);
+    server.sendservmsg("ci.bots.length: " + arg1.bots.length);
+    server.sendservmsg("ci.bots.constructor.name: " + arg1.bots.constructor.name);
+
     //server.sendservmsg(JSON.stringify(arg1.state));
     console.log(str);
 }

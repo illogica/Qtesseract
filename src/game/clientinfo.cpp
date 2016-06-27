@@ -1,6 +1,7 @@
 #include "clientinfo.h"
 #include <limits.h>
 #include <QJSEngine>
+#include <QDebug>
 #include "qstringutils.h"
 #include "ents.h"
 #include "tools.h"
@@ -8,7 +9,7 @@
 
 namespace server{
 
-    clientinfo::clientinfo(QObject *parent) :  QObject(parent), getdemo(NULL), getmap(NULL), clipboard(NULL), authchallenge(NULL), authkickreason(NULL)
+    clientinfo::clientinfo() : getdemo(NULL), getmap(NULL), clipboard(NULL), authchallenge(NULL), authkickreason(NULL)
     {
         reset();
     }
@@ -189,10 +190,7 @@ namespace server{
         strcpy(authname, result);
     }
 
-    QString clientinfo::_authdesc()
-    {
-        return QString(authdesc);
-    }
+    QString clientinfo::_authdesc() { return QString(authdesc); }
 
     void clientinfo::_setAuthdesc(const QString &s)
     {
@@ -200,10 +198,7 @@ namespace server{
         strcpy(authdesc, result);
     }
 
-    QString clientinfo::_authkickreason()
-    {
-        return QString(authkickreason);
-    }
+    QString clientinfo::_authkickreason() { return QString(authkickreason); }
 
     void clientinfo::_setAuthkickreason(const QString &s)
     {
@@ -211,21 +206,72 @@ namespace server{
         authkickreason = result;
     }
 
-
-    QList<uchar> clientinfo::_position()
+    QJSValue clientinfo::_position()
     {
-        QList<uchar> list;
-        for(int i=0; i<position.length(); i++){
-            list << position[i];
+        QJSValue result = engine->newArray(position.length());
+        for(int i=0; i<position.length(); i++)        {
+            result.setProperty(i, position[i]);
         }
-
-        return list;
+        return result;
     }
 
-    void clientinfo::_setPosition(const QList<uchar> &l)
+    void clientinfo::_setPosition(const QJSValue &l)
     {
-        for(int i=0; i<l.length(); i++){
-            position[i] = l.at(i);
+        while(!position.empty())
+            position.pop();
+
+        for(int i=0; i< l.property("length").toInt(); i++){
+            position.add(l.property(i).toInt());
+        }
+    }
+
+    /*int clientinfo::_wsdata() {
+        uchar data = *wsdata;
+        return (int)data;
+    }
+
+    void clientinfo::_setWsdata(const int data) {
+        uchar udata = (uchar)data;
+        *wsdata = &udata;
+    }*/
+
+    QJSValue clientinfo::_bots()
+    {
+        QJSValue result = engine->newArray(bots.length());
+        for(int i=0; i<bots.length(); i++) {
+            result.setProperty(i, engine->toScriptValue<clientinfo>(*bots[i]));
+        }
+        return result;
+    }
+
+    void clientinfo::_setBots(const QJSValue &l)
+    {
+        while(!bots.empty())
+            bots.pop();
+
+        for(int i=0; i< l.property("length").toInt(); i++){
+            clientinfo bot = engine->fromScriptValue<clientinfo>(l.property(i));
+            bots.add(&bot);
+        }
+    }
+
+    QJSValue clientinfo::_events()
+    {
+        QJSValue result = engine->newArray(events.length());
+        for(int i=0; i<events.length(); i++) {
+            result.setProperty(i, engine->toScriptValue<gameevent>(*events[i]));
+        }
+        return result;
+    }
+
+    void clientinfo::_setEvents(const QJSValue &l)
+    {
+        while(!events.empty())
+            events.pop();
+
+        for(int i=0; i< l.property("length").toInt(); i++){
+            gameevent evt = engine->fromScriptValue<gameevent>(l.property(i));
+            events.add(&evt);
         }
     }
 }

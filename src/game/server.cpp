@@ -2487,16 +2487,14 @@ namespace server
                     }
                     else connected(ci);
 
-                    //qserver->on_N_CONNECT(ci, QString(password), QString(authdesc), QString(authname));
                     if(qserver->hasEvent(N_CONNECT)){
-                        logoutf("N_CONNECT");
                         ci->engine = &(qserver->js);
                         QJSValueList capsule;
-                        capsule <<  qserver->js.newQObject(ci);//TODO: add values for, arguments
-                        capsule << 11;
+                        capsule << qserver->js.toScriptValue<clientinfo>(*ci);
+                        capsule << QString(password);
+                        capsule << QString(authdesc);
+                        capsule << QString(authname);
                         qserver->runEventHooks(N_CONNECT, capsule);
-                    } else {
-                        logoutf("Failed N_CONNECT hook");
                     }
                     break;
                 }

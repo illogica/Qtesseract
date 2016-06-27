@@ -8,6 +8,7 @@ CONFIG += rtti_off
 CONFIG += exceptions_off
 
 CONFIG += c++14
+CONFIG += qml_debug
 
 contains(QMAKESPEC, "g++"){
 
