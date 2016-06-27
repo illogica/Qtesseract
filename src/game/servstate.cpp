@@ -51,5 +51,4 @@ namespace server{
         respawn();
         projs.reset();
     }
-
 }

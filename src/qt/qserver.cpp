@@ -48,11 +48,11 @@ void Qserver::registerHook(int event, QString functionName, bool bypass)
     eventsMap->registerEvent(event, ed);
 }
 
-void Qserver::runEventHooks(int event)
+void Qserver::runEventHooks(int event, QJSValueList &capsule)
 {
     for(EventData ed : eventsMap->getEventData(event)){
         if(js.globalObject().hasProperty(ed.jsFunctionName)){
-            QJSValue result = js.globalObject().property(ed.jsFunctionName).call();
+            QJSValue result = js.globalObject().property(ed.jsFunctionName).call(capsule);
             if (result.isError())
                 qDebug()
                         << "Uncaught exception at line"

@@ -44,7 +44,7 @@ public:
     ~Qserver();
 
     bool hasEvent(int event);
-    void runEventHooks(int event);
+    void runEventHooks(int event, QJSValueList &capsule);
 
     QJSEngine js;
     QJSValue srv;

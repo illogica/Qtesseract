@@ -113,12 +113,22 @@ function startup() {
 
 server.registerHook(Events.N_CONNECT, "onConnect", false);
 
-function onConnect(){
+function onConnect(arg1, arg2){
     server.sendservmsg("OnConnect() inside JS! propTestInt=" + server.qtestInt);
     server.qtestInt++;
     server.qtestInt++;
     server.qtestInt++;
     server.qtestInt++;
     server.sendservmsg("OnConnect() inside JS! propTestInt=" + server.qtestInt);
+    server.sendservmsg("Capsule test: " + arg1.name + ", " + arg2);
+    var str = JSON.stringify(arg1.state);
+    //str = JSON.stringify(arg1, null, 4); // (Optional) beautiful indented output.
+    server.sendservmsg("state: " + str);
+    server.sendservmsg("state.state: " + arg1.state.state);
+    server.sendservmsg("ci.position: " + arg1.position);
+    server.sendservmsg("ci.state: " + arg1.state);
+    server.sendservmsg("ci: " + arg1);
+    //server.sendservmsg(JSON.stringify(arg1.state));
+    console.log(str);
 }
 

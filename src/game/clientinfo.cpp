@@ -1,5 +1,6 @@
 #include "clientinfo.h"
 #include <limits.h>
+#include <QJSEngine>
 #include "qstringutils.h"
 #include "ents.h"
 #include "tools.h"
@@ -155,4 +156,76 @@ namespace server{
         strcpy(mapvote, result);
     }
 
+    QJSValue clientinfo::_state()
+    {
+        QJSValue v = engine->toScriptValue<servstate>(state);
+        return v;
+    }
+
+    void clientinfo::_setState(const QJSValue &s)
+    {
+        state = engine->fromScriptValue<servstate>(s);
+    }
+
+    QString clientinfo::_clientmap()
+    {
+        return QString(clientmap);
+    }
+
+    void clientinfo::_setClientmap(const QString &s)
+    {
+        char* result = qstrtochar(s);
+        strcpy(clientmap, result);
+    }
+
+    QString clientinfo::_authname()
+    {
+        return QString(authname);
+    }
+
+    void clientinfo::_setAuthname(const QString &s)
+    {
+        char* result = qstrtochar(s);
+        strcpy(authname, result);
+    }
+
+    QString clientinfo::_authdesc()
+    {
+        return QString(authdesc);
+    }
+
+    void clientinfo::_setAuthdesc(const QString &s)
+    {
+        char* result = qstrtochar(s);
+        strcpy(authdesc, result);
+    }
+
+    QString clientinfo::_authkickreason()
+    {
+        return QString(authkickreason);
+    }
+
+    void clientinfo::_setAuthkickreason(const QString &s)
+    {
+        char* result = qstrtochar(s);
+        authkickreason = result;
+    }
+
+
+    QList<uchar> clientinfo::_position()
+    {
+        QList<uchar> list;
+        for(int i=0; i<position.length(); i++){
+            list << position[i];
+        }
+
+        return list;
+    }
+
+    void clientinfo::_setPosition(const QList<uchar> &l)
+    {
+        for(int i=0; i<l.length(); i++){
+            position[i] = l.at(i);
+        }
+    }
 }

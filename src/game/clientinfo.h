@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QString>
+#include <QVariant>
+#include <QJSValue>
 #include "vec.h"
 #include "vector.h"
 #include "servstate.h"
@@ -39,6 +41,25 @@ namespace server{
         Q_PROPERTY(int lastevent MEMBER lastevent)
         Q_PROPERTY(int pushed MEMBER pushed)
         Q_PROPERTY(int exceeded MEMBER exceeded)
+        Q_PROPERTY(QJSValue state READ _state WRITE _setState)
+
+        Q_PROPERTY(QList<uchar> position READ _position WRITE _setPosition)
+
+        Q_PROPERTY(int wslen MEMBER wslen)
+        Q_PROPERTY(int ping MEMBER ping)
+        Q_PROPERTY(int aireinit MEMBER aireinit)
+        Q_PROPERTY(QString clientmap READ _clientmap WRITE _setClientmap)
+        Q_PROPERTY(int mapcrc MEMBER mapcrc)
+        Q_PROPERTY(bool warned MEMBER warned)
+        Q_PROPERTY(bool gameclip MEMBER gameclip)
+        Q_PROPERTY(int lastclipboard MEMBER lastclipboard)
+        Q_PROPERTY(int needclipboard MEMBER needclipboard)
+        Q_PROPERTY(int connectauth MEMBER connectauth)
+        Q_PROPERTY(uint authreq MEMBER authreq)
+        Q_PROPERTY(QString authname READ _authname WRITE _setAuthname)
+        Q_PROPERTY(QString authdesc READ _authdesc WRITE _setAuthdesc)
+        Q_PROPERTY(int authkickvictim MEMBER authkickvictim)
+        Q_PROPERTY(QString authkickreason READ _authkickreason WRITE _setAuthkickreason)
 
     public slots:
 
@@ -61,6 +82,18 @@ namespace server{
         void _setName(const QString &s);
         QString _mapvote();
         void _setMapvote(const QString &s);
+        QJSValue _state();
+        void _setState(const QJSValue &s);
+        QString _clientmap();
+        void _setClientmap(const QString &s);
+        QString _authname();
+        void _setAuthname(const QString &s);
+        QString _authdesc();
+        void _setAuthdesc(const QString &s);
+        QString _authkickreason();
+        void _setAuthkickreason(const QString &s);
+        QList<uchar> _position();
+        void _setPosition(const QList<uchar> &l);
 
     public:
         clientinfo(QObject *parent = 0);
@@ -72,30 +105,32 @@ namespace server{
 
         int clientnum, ownernum, connectmillis, sessionid, overflow;
         string name, mapvote;
-        //QString name, mapvote;
         int team, playermodel, playercolor;
         int modevote;
         int privilege;
         bool connected, local, timesync;
         int gameoffset, lastevent, pushed, exceeded;
         servstate state;
-        vector<gameevent *> events;
-        vector<uchar> position, messages;
-        uchar *wsdata;
+        vector<gameevent *> events; // TODO: js bindings
+        vector<uchar> position, messages; // TODO: js bindings
+        uchar *wsdata; // TODO: js bindings
         int wslen;
-        vector<clientinfo *> bots;
+        vector<clientinfo *> bots; // TODO: js bindings
         int ping, aireinit;
         string clientmap;
         int mapcrc;
         bool warned, gameclip;
-        ENetPacket *getdemo, *getmap, *clipboard;
+        ENetPacket *getdemo, *getmap, *clipboard; // TODO: js bindings
         int lastclipboard, needclipboard;
         int connectauth;
         uint authreq;
         string authname, authdesc;
-        void *authchallenge;
+        void *authchallenge; // TODO: js bindings
         int authkickvictim;
         char *authkickreason;
+
+        QJSEngine *engine;
+
     };
 
 }
