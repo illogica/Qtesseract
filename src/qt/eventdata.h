@@ -9,7 +9,7 @@
  */
 struct EventData
 {
-    EventData(QString n, bool b) : jsFunctionName(n), bypass(b){}
+    EventData(QString n, bool b = false) : jsFunctionName(n), bypass(b){}
     QString jsFunctionName;
     bool bypass;
 };

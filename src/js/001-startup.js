@@ -106,6 +106,27 @@ var Events = {
     NUMMSG          :104
 };
 
+var Disconnect_reason = {
+    DISC_NONE: 0,
+    DISC_EOP:1,
+    DISC_LOCAL:2,
+    DISC_KICK:3,
+    DISC_MSGERR:4,
+    DISC_IPBAN:5,
+    DISC_PRIVATE:6,
+    DISC_MAXCLIENTS:7,
+    DISC_TIMEOUT:8,
+    DISC_OVERFLOW:9,
+    DISC_PASSWORD:10,
+    DISC_NUM:11 };
+
+var MasterMode = {
+    MM_AUTH : -1,
+    MM_OPEN : 0,
+    MM_VETO: 1,
+    MM_LOCKED:2,
+    MM_PRIVATE:3
+}
 
 function startup() {
     console.log("JS startup" + Events.N_WELCOME + " hey hey hey!");
@@ -113,27 +134,11 @@ function startup() {
 
 server.registerHook(Events.N_CONNECT, "onConnect", false);
 
-function onConnect(arg1, arg2){
-    server.sendservmsg("OnConnect() inside JS! propTestInt=" + server.qtestInt);
-    server.qtestInt++;
-    server.qtestInt++;
-    server.qtestInt++;
-    server.qtestInt++;
-    server.sendservmsg("OnConnect() inside JS! propTestInt=" + server.qtestInt);
-    server.sendservmsg("Capsule test: " + arg1.name + ", " + arg2);
-    var str = JSON.stringify(arg1.state);
-    //str = JSON.stringify(arg1, null, 4); // (Optional) beautiful indented output.
-    server.sendservmsg("state: " + str);
-    server.sendservmsg("state.state: " + arg1.state.state);
-    server.sendservmsg("ci.position: " + arg1.position);
-    server.sendservmsg("ci.position.length: " + arg1.position.length);
-    server.sendservmsg("ci.position.constructor.name: " + arg1.position.constructor.name);
-    server.sendservmsg("ci.state: " + arg1.state);
-    server.sendservmsg("ci.bots: " + arg1.bots);
-    server.sendservmsg("ci.bots.length: " + arg1.bots.length);
-    server.sendservmsg("ci.bots.constructor.name: " + arg1.bots.constructor.name);
-
-    //server.sendservmsg(JSON.stringify(arg1.state));
-    console.log(str);
+function onConnect(ci, password, autdesc, authname, sender, chan){
+    server.sendservmsg("onConnect()");
+    /*var disconnect = server.allowconnect(ci, password);
+    server.sendservmsg("disconnect = " + disconnect);
+    server.connected(ci);
+    server.sendservmsg("client " + ci.name + "connected.");*/
 }
 

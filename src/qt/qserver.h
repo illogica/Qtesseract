@@ -25,8 +25,12 @@ namespace server{
     extern vector<ban> bannedips;
 
     extern void sendservmsg(const char *s);
+    extern int allowconnect(clientinfo *ci, const char *pwd);
+    extern void connected(clientinfo *ci);
 }
 
+void logoutf(const char *fmt, ...);
+extern void disconnect_client(int n, int reason);
 
 /**
  * @brief The Qserver class
@@ -44,7 +48,7 @@ public:
     ~Qserver();
 
     bool hasEvent(int event);
-    void runEventHooks(int event, QJSValueList &capsule);
+    bool runEventHooks(int event, QJSValueList &capsule);
 
     QJSEngine js;
     QJSValue srv;
@@ -62,6 +66,10 @@ public slots:
 
     //server to javascript api
     void sendservmsg(QString s);
+    void logoutf(QString s);
+    void allowconnect(QJSValue ci, QString pwd);
+    void disconnect_client(int sender, int disconnect_reason);
+    void connected(QJSValue ci);
 
     void on_N_CONNECT(server::clientinfo *ci, QString password, QString authdesc, QString authname);
     void on_N_PING(server::clientinfo *ci);

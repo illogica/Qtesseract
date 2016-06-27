@@ -36,6 +36,7 @@ void JSLoader::loadJSFiles()
         }
         QString fileContent = jsFiles.at(i)->readAll();
         newSources.append(fileContent);
+        jsFiles.at(i)->close();
     }
 
     //only if everything went fine:

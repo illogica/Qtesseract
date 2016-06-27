@@ -2475,6 +2475,20 @@ namespace server
                     getstring(password, p, sizeof(password));
                     getstring(authdesc, p, sizeof(authdesc));
                     getstring(authname, p, sizeof(authname));
+
+                    if(qserver->hasEvent(N_CONNECT)){
+                        ci->engine = &(qserver->js);
+                        QJSValueList capsule;
+                        capsule << qserver->js.toScriptValue<clientinfo>(*ci);
+                        capsule << QString(password);
+                        capsule << QString(authdesc);
+                        capsule << QString(authname);
+                        capsule << sender;
+                        capsule << chan;
+                        if(qserver->runEventHooks(N_CONNECT, capsule))
+                            break;
+                    }
+
                     int disc = allowconnect(ci, password);
                     if(disc)
                     {
@@ -2487,15 +2501,6 @@ namespace server
                     }
                     else connected(ci);
 
-                    if(qserver->hasEvent(N_CONNECT)){
-                        ci->engine = &(qserver->js);
-                        QJSValueList capsule;
-                        capsule << qserver->js.toScriptValue<clientinfo>(*ci);
-                        capsule << QString(password);
-                        capsule << QString(authdesc);
-                        capsule << QString(authname);
-                        qserver->runEventHooks(N_CONNECT, capsule);
-                    }
                     break;
                 }
 
