@@ -146,7 +146,7 @@ namespace server{
         strcpy(name, result);
     }
 
-    /*QString clientinfo::_mapvote()
+    QString clientinfo::_mapvote()
     {
         return QString(mapvote);
     }
@@ -157,7 +157,7 @@ namespace server{
         strcpy(mapvote, result);
     }
 
-    QJSValue clientinfo::_state()
+    /*QJSValue clientinfo::_state()
     {
         QJSValue v = engine->toScriptValue<servstate>(state);
         return v;
@@ -166,7 +166,7 @@ namespace server{
     void clientinfo::_setState(const QJSValue &s)
     {
         state = engine->fromScriptValue<servstate>(s);
-    }
+    }*/
 
     QString clientinfo::_clientmap()
     {
@@ -206,7 +206,7 @@ namespace server{
         authkickreason = result;
     }
 
-    QJSValue clientinfo::_position()
+    /*QJSValue clientinfo::_position()
     {
         QJSValue result = engine->newArray(position.length());
         for(int i=0; i<position.length(); i++)        {
@@ -223,18 +223,18 @@ namespace server{
         for(int i=0; i< l.property("length").toInt(); i++){
             position.add(l.property(i).toInt());
         }
-    }
+    }*/
 
-    uchar clientinfo::_wsdata() {
+    /*uchar clientinfo::_wsdata() {
         //uchar data = *wsdata;
         return *wsdata;
     }
 
     void clientinfo::_setWsdata(uchar data) {
         wsdata = &data;
-    }
+    }*/
 
-    QJSValue clientinfo::_bots()
+    /*QJSValue clientinfo::_bots()
     {
         QJSValue result = engine->newArray(bots.length());
         for(int i=0; i<bots.length(); i++) {
@@ -252,9 +252,9 @@ namespace server{
             clientinfo bot = engine->fromScriptValue<clientinfo>(l.property(i));
             bots.add(&bot);
         }
-    }
+    }*/
 
-    QJSValue clientinfo::_events()
+    /*QJSValue clientinfo::_events()
     {
         QJSValue result = engine->newArray(events.length());
         for(int i=0; i<events.length(); i++) {

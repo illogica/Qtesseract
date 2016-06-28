@@ -2458,9 +2458,14 @@ namespace server
         clientinfo *ci = sender>=0 ? getinfo(sender) : NULL, *cq = ci, *cm = ci;
         if(ci && !ci->connected)
         {
-            if(chan==0) return;
-            else if(chan!=1) { disconnect_client(sender, DISC_MSGERR); return; }
-            else while(p.length() < p.maxlen) switch(checktype(getint(p), ci))
+            if(chan==0)
+                return;
+            else if(chan!=1)
+            {
+                disconnect_client(sender, DISC_MSGERR); return;
+            }
+            else
+                while(p.length() < p.maxlen) switch(checktype(getint(p), ci))
             {
                 case N_CONNECT:
                 {
@@ -2512,7 +2517,18 @@ namespace server
                     uint id = (uint)getint(p);
                     getstring(ans, p, sizeof(ans));
 
-                    qserver->on_N_AUTHANS(ci, QString(desc), QString(ans), id);
+                    if(qserver->hasEvent(N_AUTHANS)){
+                        ci->engine = &(qserver->js);
+                        QJSValueList capsule;
+                        capsule << qserver->js.newQObject(ci);
+                        capsule << QString(desc);
+                        capsule << QString(ans);
+                        capsule << QString(id);
+                        capsule << sender;
+                        capsule << chan;
+                        if(qserver->runEventHooks(N_AUTHANS, capsule))
+                            break;
+                    }
 
                     if(!answerchallenge(ci, id, ans, desc))
                     {
@@ -2524,7 +2540,12 @@ namespace server
 
                 case N_PING:
                     getint(p);
-                    qserver->on_N_PING(ci);
+                    if(qserver->hasEvent(N_PING)){
+                        ci->engine = &(qserver->js);
+                        QJSValueList capsule;
+                        capsule << qserver->js.newQObject(ci);
+                        qserver->runEventHooks(N_PING, capsule);
+                    }
                     break;
 
                 default:
@@ -2577,6 +2598,24 @@ namespace server
                     p.get(); if(flags&(1<<5)) p.get();
                     if(flags&(1<<6)) loopk(2) p.get();
                 }
+
+                if(qserver->hasEvent(N_POS)){
+                    ci->engine = &(qserver->js);
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << qserver->js.newQObject(cp);
+                    capsule << pcn;
+                    capsule << pos[0];
+                    capsule << pos[1];
+                    capsule << pos[2];
+                    capsule << vel[0];
+                    capsule << vel[1];
+                    capsule << vel[2];
+                    capsule << sender;
+                    if(qserver->runEventHooks(N_POS, capsule))
+                        break;
+                }
+
                 if(cp)
                 {
                     if((!ci->local || demorecord || hasnonlocalclients()) && (cp->state.state==CS_ALIVE || cp->state.state==CS_EDITING))
@@ -2590,9 +2629,6 @@ namespace server
                     cp->state.o = pos;
                     cp->gameclip = (flags&0x80)!=0;
                 }
-
-                qserver->on_N_POS(ci, cp, pos, mag, dir, vel);
-
                 break;
             }
 

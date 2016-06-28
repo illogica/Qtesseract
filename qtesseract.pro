@@ -234,9 +234,11 @@ HEADERS +=  src/shared/cube.h \
 #   src/qt/hooks.h
 
 DISTFILES += \
-    src/js/001-startup.js \
     src/js/999-test.js \
-    src/js/api.txt
+    src/js/api.txt \
+    src/js/100-startup.js \
+    src/js/001-enums.js \
+    src/js/010-vec.js
 
 
 

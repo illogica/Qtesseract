@@ -1,3 +1,53 @@
+---------------------
+N_CONNECT is published by a client "ci" when it wants to connect
 server.registerHook(Events.N_CONNECT, "onConnect", true);
-
 function onConnect(ci, password, authdesc, authname, sender, chan)
+---------------------
+N_AUTHANS, to be tested yet
+server.registerHook(Events.N_AUTHANS, "onAuthAns", true);
+function onAuthAns(ci, desc, ans, id, sender, chan)
+---------------------
+N_PING seems to be not used.
+server.registerHook(Events.N_PING, "onPing", false);
+function onPing(ci)
+---------------------
+N_POS: client "cn" publishes its position and velocity.
+server.registerHook(Events.N_POS, "onPos", false);
+function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender){}
+
+example:
+function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender){
+    //note: make sure a clientinfo is !== null
+    var msg = "";
+    if(ci !== null)
+        msg += "ci.name: " + ci.name + " ";
+    if(cp !== null)
+        msg += "cp.name: " + cp.name + " ";
+    msg += "pcn: " + pcn + " ";
+    msg += "x:" + posx.toFixed(2) + " ";
+    msg += "y:" + posy.toFixed(2) + " ";
+    msg += "z:" + posz.toFixed(2) + " ";
+    msg += "vx:" + velx.toFixed(2) + " ";
+    msg += "vy:" + vely.toFixed(2) + " ";
+    msg += "vz:" + velz.toFixed(2) + " ";
+    msg += "sender:" + sender;
+    server.sendservmsg(msg);
+}
+
+example with Vec library:
+function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender){
+    var pos = new Vec(posx, posy, posz);
+    var vel = new Vec(velx, vely, velz);
+
+    //note: make sure a clientinfo is !== null
+    var msg = "";
+    if(ci !== null)
+        msg += "ci.name: " + ci.name + " ";
+    if(cp !== null)
+        msg += "cp.name: " + cp.name + " ";
+    msg += "pcn: " + pcn + " ";
+    msg += "pos: " + pos.length().toFixed(1) + " ";
+    msg += "vel:" + vel.length().toFixed(1) + " ";
+    msg += "sender:" + sender;
+    server.sendservmsg(msg);
+}
