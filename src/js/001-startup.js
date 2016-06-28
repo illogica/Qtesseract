@@ -106,7 +106,7 @@ var Events = {
     NUMMSG          :104
 };
 
-var Disconnect_reason = {
+var Disconnect = {
     DISC_NONE: 0,
     DISC_EOP:1,
     DISC_LOCAL:2,
@@ -118,7 +118,8 @@ var Disconnect_reason = {
     DISC_TIMEOUT:8,
     DISC_OVERFLOW:9,
     DISC_PASSWORD:10,
-    DISC_NUM:11 };
+    DISC_NUM:11
+};
 
 var MasterMode = {
     MM_AUTH : -1,
@@ -132,13 +133,24 @@ function startup() {
     console.log("JS startup" + Events.N_WELCOME + " hey hey hey!");
 }
 
-server.registerHook(Events.N_CONNECT, "onConnect", false);
+server.registerHook(Events.N_CONNECT, "onConnect", true);
 
-function onConnect(ci, password, autdesc, authname, sender, chan){
-    server.sendservmsg("onConnect()");
-    /*var disconnect = server.allowconnect(ci, password);
+function onConnect(ci, password, authdesc, authname, sender, chan){
+    var disconnect = server.allowconnect(ci, password);
+
+    if(disconnect !== Disconnect.DISC_NONE){
+        var sauth = server.serverauth();
+        if(disconnect === Disconnect.DISC_LOCAL || sauth === "" || sauth === authdesc){
+            server.disconnect_client(sender, disconnect);
+            return;
+        } else {
+            ci.connectauth = disconnect;
+        }
+    } else {
+        server.connected(ci);
+    }
     server.sendservmsg("disconnect = " + disconnect);
-    server.connected(ci);
-    server.sendservmsg("client " + ci.name + "connected.");*/
+    server.sendservmsg("onConnect(), sender: " + sender + ", chan: " + chan + ", serverauth: " + server.serverauth());
+    server.sendservmsg("client " + ci.name + " connected.");
 }
 

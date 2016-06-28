@@ -9,7 +9,7 @@
 
 namespace server{
 
-    clientinfo::clientinfo() : getdemo(NULL), getmap(NULL), clipboard(NULL), authchallenge(NULL), authkickreason(NULL)
+    clientinfo::clientinfo(QObject *parent) : QObject(parent), getdemo(NULL), getmap(NULL), clipboard(NULL), authchallenge(NULL), authkickreason(NULL)
     {
         reset();
     }
@@ -146,7 +146,7 @@ namespace server{
         strcpy(name, result);
     }
 
-    QString clientinfo::_mapvote()
+    /*QString clientinfo::_mapvote()
     {
         return QString(mapvote);
     }
@@ -225,15 +225,14 @@ namespace server{
         }
     }
 
-    /*int clientinfo::_wsdata() {
-        uchar data = *wsdata;
-        return (int)data;
+    uchar clientinfo::_wsdata() {
+        //uchar data = *wsdata;
+        return *wsdata;
     }
 
-    void clientinfo::_setWsdata(const int data) {
-        uchar udata = (uchar)data;
-        *wsdata = &udata;
-    }*/
+    void clientinfo::_setWsdata(uchar data) {
+        wsdata = &data;
+    }
 
     QJSValue clientinfo::_bots()
     {
@@ -273,5 +272,5 @@ namespace server{
             gameevent evt = engine->fromScriptValue<gameevent>(l.property(i));
             events.add(&evt);
         }
-    }
+    }*/
 }

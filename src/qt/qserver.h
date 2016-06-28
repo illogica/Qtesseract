@@ -27,6 +27,8 @@ namespace server{
     extern void sendservmsg(const char *s);
     extern int allowconnect(clientinfo *ci, const char *pwd);
     extern void connected(clientinfo *ci);
+
+    extern char* serverauth;
 }
 
 void logoutf(const char *fmt, ...);
@@ -67,10 +69,13 @@ public slots:
     //server to javascript api
     void sendservmsg(QString s);
     void logoutf(QString s);
-    void allowconnect(QJSValue ci, QString pwd);
+    int allowconnect(QJSValue ci, QString pwd);
     void disconnect_client(int sender, int disconnect_reason);
     void connected(QJSValue ci);
 
+    QString serverauth();
+
+    //delete this...
     void on_N_CONNECT(server::clientinfo *ci, QString password, QString authdesc, QString authname);
     void on_N_PING(server::clientinfo *ci);
     void on_N_AUTHANS(server::clientinfo *ci, QString desc, QString ans, uint id);

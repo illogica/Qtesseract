@@ -235,7 +235,8 @@ HEADERS +=  src/shared/cube.h \
 
 DISTFILES += \
     src/js/001-startup.js \
-    src/js/999-test.js
+    src/js/999-test.js \
+    src/js/api.txt
 
 
 

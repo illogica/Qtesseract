@@ -1,6 +1,4 @@
 #include "qserver.h"
-#include "clientinfo.h"
-
 #include <QDebug>
 
 Qserver::Qserver(QObject *parent) : QObject(parent)
@@ -29,15 +27,28 @@ bool Qserver::hasEvent(int event)
 void Qserver::reloadJs(QStringList &sources)
 {
     eventsMap->clear();
-
+    int counter = 0;
+    bool error = false;
     for( QString s : sources ){
         QJSValue result = js.evaluate(s);
-        if (result.isError())
-            qDebug()
-                    << "Uncaught exception at line"
-                    << result.property("lineNumber").toInt()
-                    << ":" << result.toString();
+        if (result.isError()){
+            QString err("Uncaught exception at line");
+            err += result.property("lineNumber").toString();
+            err += ": ";
+            err += result.toString();
+            sendservmsg(err);
+            qDebug() << err;
+            logoutf(err);
+            error = true;
+        }
+        counter++;
     }
+    QString success("JS: reloaded ");
+    success += " .js files. ";
+    success += error ? " WARINING - ERRORS IN JS FILES" : "No errors.";
+    qDebug() << success;
+    sendservmsg(success);
+    logoutf(success);
 }
 
 //Called by javascript
@@ -71,11 +82,14 @@ bool Qserver::runEventHooks(int event, QJSValueList &capsule)
 void Qserver::sendservmsg(QString s){  server::sendservmsg(s.toLocal8Bit().data()); }
 void Qserver::logoutf(QString s){ ::logoutf(s.toLocal8Bit().data()); }
 
-void Qserver::allowconnect(QJSValue ci, QString pwd)
+int Qserver::allowconnect(QJSValue ci, QString pwd)
 {
-    server::clientinfo tci;
-    tci = js.fromScriptValue<server::clientinfo>(ci);
-    server::allowconnect(&tci, pwd.toLocal8Bit().data());
+    //server::clientinfo tci;
+    //tci = js.fromScriptValue<server::clientinfo>(ci);
+    //return server::allowconnect(&tci, pwd.toLocal8Bit().data());
+    //return server::allowconnect(js.fromScriptValue<server::clientinfo*>(ci), pwd.toLocal8Bit().data());
+
+    return server::allowconnect((server::clientinfo*)ci.toQObject(), pwd.toLocal8Bit().data());
 }
 
 void Qserver::disconnect_client(int sender, int disconnect_reason)
@@ -85,9 +99,14 @@ void Qserver::disconnect_client(int sender, int disconnect_reason)
 
 void Qserver::connected(QJSValue ci)
 {
-    server::clientinfo tci = js.fromScriptValue<server::clientinfo>(ci);
-    server::connected(&tci);
+    //server::clientinfo tci;
+    //tci = js.fromScriptValue<server::clientinfo>(ci);
+    //server::connected(&tci);
+    //server::connected(js.fromScriptValue<server::clientinfo*>(ci));
+    server::connected(qobject_cast<server::clientinfo*>(ci.toQObject()));
 }
+
+QString Qserver::serverauth() { return QString::fromLocal8Bit(server::serverauth);}
 
 void Qserver::on_N_CONNECT(server::clientinfo *ci, QString password, QString authdesc, QString authname)
 {

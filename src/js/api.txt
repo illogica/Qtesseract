@@ -1,0 +1,3 @@
+server.registerHook(Events.N_CONNECT, "onConnect", true);
+
+function onConnect(ci, password, authdesc, authname, sender, chan)

@@ -2479,12 +2479,13 @@ namespace server
                     if(qserver->hasEvent(N_CONNECT)){
                         ci->engine = &(qserver->js);
                         QJSValueList capsule;
-                        capsule << qserver->js.toScriptValue<clientinfo>(*ci);
+                        capsule << qserver->js.newQObject(ci);
                         capsule << QString(password);
                         capsule << QString(authdesc);
                         capsule << QString(authname);
                         capsule << sender;
                         capsule << chan;
+                        //capsule << qserver->js.toScriptValue<clientinfo *>(ci); //pass the raw pointer
                         if(qserver->runEventHooks(N_CONNECT, capsule))
                             break;
                     }
