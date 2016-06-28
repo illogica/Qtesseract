@@ -157,7 +157,7 @@ namespace server{
         strcpy(mapvote, result);
     }
 
-    /*QJSValue clientinfo::_state()
+    QJSValue clientinfo::_state()
     {
         QJSValue v = engine->toScriptValue<servstate>(state);
         return v;
@@ -166,7 +166,7 @@ namespace server{
     void clientinfo::_setState(const QJSValue &s)
     {
         state = engine->fromScriptValue<servstate>(s);
-    }*/
+    }
 
     QString clientinfo::_clientmap()
     {

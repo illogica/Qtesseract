@@ -42,7 +42,7 @@ namespace server{
         Q_PROPERTY(int lastevent MEMBER lastevent)
         Q_PROPERTY(int pushed MEMBER pushed)
         Q_PROPERTY(int exceeded MEMBER exceeded)
-        //Q_PROPERTY(QJSValue state READ _state WRITE _setState)
+        Q_PROPERTY(QJSValue state READ _state WRITE _setState)
         //Q_PROPERTY(QJSValue position READ _position WRITE _setPosition)
         //Q_PROPERTY(int wslen MEMBER wslen)
         //Q_PROPERTY(QJSValue bots READ _bots WRITE _setBots)
@@ -84,8 +84,8 @@ namespace server{
         void _setName(const QString &s);
         QString _mapvote();
         void _setMapvote(const QString &s);
-        //QJSValue _state();
-        //void _setState(const QJSValue &s);
+        QJSValue _state();
+        void _setState(const QJSValue &s);
         QString _clientmap();
         void _setClientmap(const QString &s);
         QString _authname();

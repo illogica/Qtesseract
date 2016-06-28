@@ -2643,8 +2643,6 @@ namespace server
                     sendf(-1, 0, "ri4x", N_TELEPORT, pcn, teleport, teledest, cp->ownernum);
                 }
 
-                qserver->on_N_TELEPORT(ci, cp, teleport, teledest);
-
                 break;
             }
 
@@ -2660,8 +2658,6 @@ namespace server
                     sendf(-1, 0, "ri3x", N_JUMPPAD, pcn, jumppad, cp->ownernum);
                 }
 
-                qserver->on_N_JUMPPAD(ci, cp, jumppad);
-
                 break;
             }
 
@@ -2674,8 +2670,6 @@ namespace server
                     cq = getinfo(qcn);
                     if(cq && qcn != sender && cq->ownernum != sender) cq = NULL;
                 }
-
-                qserver->on_N_FROMAI(ci, cq);
 
                 break;
             }
@@ -2700,8 +2694,6 @@ namespace server
                 else ci->state.state = ci->state.editstate;
                 QUEUE_MSG;
 
-                qserver->on_N_EDITMODE(ci, val);
-
                 break;
             }
 
@@ -2725,14 +2717,11 @@ namespace server
                 checkmaps();
                 if(cq && cq != ci && cq->ownernum != ci->clientnum) cq = NULL;
 
-                qserver->on_N_MAPCRC(ci, crc, QString(text));
-
                 break;
             }
 
             case N_CHECKMAPS:
                 checkmaps(sender);
-                qserver->on_N_CHECKMAPS(ci);
                 break;
 
             case N_TRYSPAWN:
