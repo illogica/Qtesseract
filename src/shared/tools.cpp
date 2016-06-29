@@ -165,7 +165,6 @@ static inline void sendstring_(const char *t, T &p)
 void sendstring(const char *t, ucharbuf &p) { sendstring_(t, p); }
 void sendstring(const char *t, packetbuf &p) { sendstring_(t, p); }
 void sendstring(const char *t, vector<uchar> &p) { sendstring_(t, p); }
-//void sendqstring(QString &t, packetbuf &p) { sendstring(qstrtochar(t), p); }
 
 void getstring(char *text, ucharbuf &p, size_t len)
 {

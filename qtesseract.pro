@@ -10,8 +10,7 @@ CONFIG += exceptions_off
 CONFIG += c++14
 CONFIG += qml_debug
 
-contains(QMAKESPEC, "g++"){
-
+!contains(QMAKESPEC, "msvc"){
     win32 { #statinc linking for mingw builds
         QMAKE_LFLAGS += -static-libgcc -static-libstdc++
     }
@@ -230,7 +229,8 @@ HEADERS +=  src/shared/cube.h \
     src/qt/jsloader.h \
     src/qt/eventdata.h \
     src/qt/servereventsmap.h \
-    src/qt/qstringutils.h
+    src/qt/qstringutils.h \
+    src/engine/client.h
 #   src/qt/hooks.h
 
 DISTFILES += \

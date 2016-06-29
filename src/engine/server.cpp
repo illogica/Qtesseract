@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #include "qserver.h"
+#include "client.h"
 
 Qserver *qserver;
 
@@ -111,15 +112,6 @@ void conoutf(int type, const char *fmt, ...)
 #define DEFAULTCLIENTS 8
 
 enum { ST_EMPTY, ST_LOCAL, ST_TCPIP };
-
-struct client                   // server side version of "dynent" type
-{
-    int type;
-    int num;
-    ENetPeer *peer;
-    string hostname;
-    void *info;
-};
 
 vector<client *> clients;
 
@@ -631,9 +623,6 @@ void updatetime()
 
 void serverslice(bool dedicated, uint timeout)   // main server update, called from main loop in sp, or from below in dedicated server
 {
-    //Process all Qt events, instead of calling exec() which is blocking.
-    QApplication::instance()->processEvents();
-    //logoutf("serverslice %s", __TIME__);
 
     if(!serverhost)
     {
@@ -642,7 +631,8 @@ void serverslice(bool dedicated, uint timeout)   // main server update, called f
         return;
     }
 
-    // below is network only
+    //Process all Qt events, instead of calling exec() which is blocking.
+    QApplication::instance()->processEvents();
 
     if(dedicated)
     {
@@ -671,6 +661,8 @@ void serverslice(bool dedicated, uint timeout)   // main server update, called f
         if(nonlocalclients || serverhost->totalSentData || serverhost->totalReceivedData) logoutf("status: %d remote clients, %.1f send, %.1f rec (K/sec)", nonlocalclients, serverhost->totalSentData/60.0f/1024, serverhost->totalReceivedData/60.0f/1024);
         serverhost->totalSentData = serverhost->totalReceivedData = 0;
     }
+
+    // below is network only
 
     ENetEvent event;
     bool serviced = false;

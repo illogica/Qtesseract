@@ -33,6 +33,7 @@ private:
 
     QFileSystemWatcher *dirWatcher;
     QStringList sources;
+    QList<QFile*> jsFiles;
 
 };
 

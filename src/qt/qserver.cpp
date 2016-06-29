@@ -58,6 +58,7 @@ void Qserver::registerHook(int event, QString functionName, bool bypass)
     eventsMap->registerEvent(event, ed);
 }
 
+
 bool Qserver::runEventHooks(int event, QJSValueList &capsule)
 {
     bool bypass = false;
@@ -76,9 +77,11 @@ bool Qserver::runEventHooks(int event, QJSValueList &capsule)
         }
         bypass |= ed.bypass;
     }
+    //js.collectGarbage();
     return bypass;
 }
 
+void Qserver::conout(int type, QString s){ ::conoutf(type, s.toLocal8Bit().data());}
 void Qserver::sendservmsg(QString s){  server::sendservmsg(s.toLocal8Bit().data()); }
 void Qserver::logoutf(QString s){ ::logoutf(s.toLocal8Bit().data()); }
 
@@ -107,6 +110,10 @@ void Qserver::connected(QJSValue ci)
 }
 
 bool Qserver::hasnonlocalclients(){ return ::hasnonlocalclients();}
+
+int Qserver::getnumclients(){ return ::getnumclients();}
+
+QJSValue Qserver::getclientinfo(int i){ return js.newQObject((server::clientinfo*)(::getclientinfo(i))); }
 
 QString Qserver::serverauth() { return QString::fromLocal8Bit(server::serverauth);}
 

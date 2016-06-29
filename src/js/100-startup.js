@@ -5,6 +5,7 @@ function startup() {
 
 server.registerHook(Events.N_CONNECT, "onConnect", true);
 server.registerHook(Events.N_POS, "onPos", false);
+server.registerHook(Events.N_TEXT, "onText", false);
 
 function onConnect(ci, password, authdesc, authname, sender, chan){
     var disconnect = server.allowconnect(ci, password);
@@ -30,8 +31,6 @@ function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender){
 
     //note: make sure a clientinfo is !== null
     var msg = "";
-    if(ci !== null)
-        msg += "ci.name: " + ci.name + " ";
     if(cp !== null)
         msg += "cp.name: " + cp.name + " ";
     msg += "pcn: " + pcn + " ";
@@ -41,5 +40,10 @@ function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender){
 
     if(vel.length() > 100) server.disconnect_client(cp.clientnum, 3);
 
-    server.sendservmsg(msg);
+    //server.sendservmsg(msg);
+    server.conout(Conout.CON_WARN, msg);
+}
+
+function onText(ci, text){
+    server.sendservmsg(text);
 }

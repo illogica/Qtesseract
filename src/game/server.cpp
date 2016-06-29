@@ -2482,7 +2482,7 @@ namespace server
                     getstring(authname, p, sizeof(authname));
 
                     if(qserver->hasEvent(N_CONNECT)){
-                        ci->engine = &(qserver->js);
+                        //ci->engine = &(qserver->js);
                         QJSValueList capsule;
                         capsule << qserver->js.newQObject(ci);
                         capsule << QString(password);
@@ -2491,8 +2491,7 @@ namespace server
                         capsule << sender;
                         capsule << chan;
                         //capsule << qserver->js.toScriptValue<clientinfo *>(ci); //pass the raw pointer
-                        if(qserver->runEventHooks(N_CONNECT, capsule))
-                            break;
+                        if (qserver->runEventHooks(N_CONNECT, capsule)) break;
                     }
 
                     int disc = allowconnect(ci, password);
@@ -2518,7 +2517,7 @@ namespace server
                     getstring(ans, p, sizeof(ans));
 
                     if(qserver->hasEvent(N_AUTHANS)){
-                        ci->engine = &(qserver->js);
+                        //ci->engine = &(qserver->js);
                         QJSValueList capsule;
                         capsule << qserver->js.newQObject(ci);
                         capsule << QString(desc);
@@ -2526,8 +2525,7 @@ namespace server
                         capsule << QString(id);
                         capsule << sender;
                         capsule << chan;
-                        if(qserver->runEventHooks(N_AUTHANS, capsule))
-                            break;
+                        if (qserver->runEventHooks(N_AUTHANS, capsule)) break;
                     }
 
                     if(!answerchallenge(ci, id, ans, desc))
@@ -2574,8 +2572,10 @@ namespace server
         #define QUEUE_UINT(n) QUEUE_BUF(putuint(cm->messages, n))
         #define QUEUE_STR(text) QUEUE_BUF(sendstring(text, cm->messages))
         int curmsg;
-        while((curmsg = p.length()) < p.maxlen) switch(type = checktype(getint(p), ci))
+        while((curmsg = p.length()) < p.maxlen)
+            switch(type = checktype(getint(p), ci))
         {
+
             case N_POS:
             {
                 int pcn = getuint(p);
@@ -2599,22 +2599,10 @@ namespace server
                     if(flags&(1<<6)) loopk(2) p.get();
                 }
 
-                if(qserver->hasEvent(N_POS)){
-                    ci->engine = &(qserver->js);
-                    QJSValueList capsule;
-                    capsule << qserver->js.newQObject(ci);
-                    capsule << qserver->js.newQObject(cp);
-                    capsule << pcn;
-                    capsule << pos[0];
-                    capsule << pos[1];
-                    capsule << pos[2];
-                    capsule << vel[0];
-                    capsule << vel[1];
-                    capsule << vel[2];
-                    capsule << sender;
-                    if(qserver->runEventHooks(N_POS, capsule))
-                        break;
-                }
+                /*
+                 * It's possible to add the N_POS event hook here, but for example calling client_disconnect()
+                 * without skipping the following line WILL segfault the server.
+                */
 
                 if(cp)
                 {
@@ -2628,6 +2616,22 @@ namespace server
                     if(smode && cp->state.state==CS_ALIVE) smode->moved(cp, cp->state.o, cp->gameclip, pos, (flags&0x80)!=0);
                     cp->state.o = pos;
                     cp->gameclip = (flags&0x80)!=0;
+                }
+
+                if(qserver->hasEvent(N_POS)){
+                    //ci->engine = &(qserver->js);
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << qserver->js.newQObject(cp);
+                    capsule << pcn;
+                    capsule << pos[0];
+                    capsule << pos[1];
+                    capsule << pos[2];
+                    capsule << vel[0];
+                    capsule << vel[1];
+                    capsule << vel[2];
+                    capsule << sender;
+                    (qserver->runEventHooks(N_POS, capsule));
                 }
                 break;
             }
@@ -2837,9 +2841,16 @@ namespace server
 
             case N_TEXT:
             {
+                getstring(text, p);
+
+                QJSValueList capsule;
+                capsule << qserver->js.newQObject(ci);
+                capsule << QString(text);
+                if (qserver->runEventHooks(N_TEXT, capsule)) break;
+
                 QUEUE_AI;
                 QUEUE_MSG;
-                getstring(text, p);
+
                 filtertext(text, text, true, true);
                 QUEUE_STR(text);
                 if(isdedicatedserver() && cq) logoutf("%s: %s", colorname(cq), text);

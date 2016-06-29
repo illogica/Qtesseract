@@ -23,7 +23,7 @@ void JSLoader::init()
 void JSLoader::loadJSFiles()
 {
 
-    QList<QFile*> jsFiles = getJsFiles();
+    jsFiles = getJsFiles();
 
     QStringList newSources;
     for(int i=0; i<jsFiles.size(); i++){
@@ -56,7 +56,7 @@ void JSLoader::updateJSFileWatchers()
     }
     jsFilesWatchers.clear();
 
-    QList<QFile*> jsFiles = getJsFiles();
+    jsFiles = getJsFiles();
     for(int i=0; i<jsFiles.size(); i++){
         QFileSystemWatcher* watcher = new QFileSystemWatcher();
         watcher->addPath(jsFiles.at(i)->fileName());
@@ -67,12 +67,15 @@ void JSLoader::updateJSFileWatchers()
 
 QList<QFile*> JSLoader::getJsFiles()
 {
-    QList<QFile*> retVal;
+    for(QFile* f : jsFiles){
+        delete f;
+    }
+    jsFiles.clear();
 
     QDir jsDir(HOMEDIR);
     if(!jsDir.exists()){
         logoutf("ERROR: Cannot find js directory");
-        return retVal;
+        return jsFiles;
     }
 
     jsDir.setFilter(QDir::Files | QDir::NoSymLinks);
@@ -80,9 +83,9 @@ QList<QFile*> JSLoader::getJsFiles()
     QStringList nameFilters;
     nameFilters << "*.js" << "*.qs";
     jsDir.setNameFilters(nameFilters);
-    QStringList jsFiles = jsDir.entryList();
-    for(int i=0; i<jsFiles.size(); i++){
-        retVal.append(new QFile(HOMEDIR + jsFiles.at(i)));
+    QStringList jsFileNames = jsDir.entryList();
+    for(int i=0; i<jsFileNames.size(); i++){
+        jsFiles.append(new QFile(HOMEDIR + jsFileNames.at(i)));
     }
-    return retVal;
+    return jsFiles;
 }

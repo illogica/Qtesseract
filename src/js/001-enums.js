@@ -129,3 +129,12 @@ var MasterMode = {
     MM_PRIVATE:3
 }
 
+var Conout = {
+    CON_INFO  : 1<<0,
+    CON_WARN  : 1<<1,
+    CON_ERROR : 1<<2,
+    CON_DEBUG : 1<<3,
+    CON_INIT  : 1<<4,
+    CON_ECHO  : 1<<5
+};
+

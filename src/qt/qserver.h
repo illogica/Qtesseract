@@ -14,6 +14,7 @@
 #include "ban.h"
 #include "vector.h"
 #include "clientinfo.h"
+#include "client.h"
 
 namespace server{
 
@@ -27,13 +28,22 @@ namespace server{
     extern void sendservmsg(const char *s);
     extern int allowconnect(clientinfo *ci, const char *pwd);
     extern void connected(clientinfo *ci);
+    extern void clientdisconnect(int n);
+    extern clientinfo *getinfo(int n);
 
     extern char* serverauth;
 }
 
-void logoutf(const char *fmt, ...);
+// engine/server.cpp
+extern vector<client *> clients;
 extern void disconnect_client(int n, int reason);
+extern void delclient(client *c);
+extern int getnumclients();
+extern void *getclientinfo(int i);
 extern bool hasnonlocalclients();
+
+void logoutf(const char *fmt, ...);
+extern void conoutf(int type, const char *fmt, ...);
 
 /**
  * @brief The Qserver class
@@ -68,12 +78,15 @@ public slots:
     void registerHook(int event, QString functionName, bool bypass);
 
     //server to javascript api
+    void conout(int type, QString s);
     void sendservmsg(QString s);
     void logoutf(QString s);
     int allowconnect(QJSValue ci, QString pwd);
     void disconnect_client(int clientnum, int disconnect_reason);
     void connected(QJSValue ci);
     bool hasnonlocalclients();
+    int getnumclients();
+    QJSValue getclientinfo(int i);
 
     //SVAR
     QString serverauth();
