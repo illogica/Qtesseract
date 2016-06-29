@@ -230,7 +230,9 @@ HEADERS +=  src/shared/cube.h \
     src/qt/eventdata.h \
     src/qt/servereventsmap.h \
     src/qt/qstringutils.h \
-    src/engine/client.h
+    src/engine/client.h \
+    src/shared/databuf.h \
+    src/shared/packetbuf.h
 #   src/qt/hooks.h
 
 DISTFILES += \

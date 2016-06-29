@@ -11,10 +11,14 @@
 #include "servereventsmap.h"
 #include "vec.h"
 #include "typedefs.h"
+#include "defs.h"
 #include "ban.h"
 #include "vector.h"
 #include "clientinfo.h"
 #include "client.h"
+#include "enums.h"
+#include "databuf.h"
+#include "packetbuf.h"
 
 namespace server{
 
@@ -42,9 +46,23 @@ extern void delclient(client *c);
 extern int getnumclients();
 extern void *getclientinfo(int i);
 extern bool hasnonlocalclients();
+extern ENetPacket *sendf(int cn, int chan, const char *format, ...);
+extern void sendpacket(int n, int chan, ENetPacket *packet, int exclude);
 
 void logoutf(const char *fmt, ...);
 extern void conoutf(int type, const char *fmt, ...);
+
+// shared/tools.cpp
+extern void putint(ucharbuf &p, int n);
+extern void putint(packetbuf &p, int n);
+extern void putint(vector<uchar> &p, int n);
+extern void putuint(ucharbuf &p, int n);
+extern void putuint(packetbuf &p, int n);
+extern void putuint(vector<uchar> &p, int n);
+extern void sendstring(const char *t, ucharbuf &p);
+extern void sendstring(const char *t, packetbuf &p);
+extern void sendstring(const char *t, vector<uchar> &p);
+
 
 /**
  * @brief The Qserver class
@@ -88,6 +106,7 @@ public slots:
     bool hasnonlocalclients();
     int getnumclients();
     void forcespectator(int cn);
+    void rename(int cn, QString newname);
     QJSValue getclientinfo(int i);
 
     //SVAR

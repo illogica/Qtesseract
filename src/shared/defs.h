@@ -21,6 +21,15 @@ extern uint randomMT();
 #define DELETEP(p) if(p) { delete   p; p = 0; }
 #define DELETEA(p) if(p) { delete[] p; p = 0; }
 
+// server
+#ifndef MAXCLIENTS
+#define MAXCLIENTS 128                 // DO NOT set this any higher
+#endif
+
+#ifndef MAXTRANS
+#define MAXTRANS 5000                  // max amount of data to swallow in 1 go
+#endif
+
 #define PI (3.14159265358979f)
 #define SQRT2 (1.4142135623731f)
 #define SQRT3 (1.73205080756888f)

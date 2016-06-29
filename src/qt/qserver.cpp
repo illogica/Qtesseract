@@ -119,6 +119,28 @@ void Qserver::forcespectator(int cn)
     server::forcespectator(ci);
 }
 
+void Qserver::rename(int cn, QString newname)
+{
+    server::clientinfo* ci = (server::clientinfo*)(::getclientinfo(cn));
+    string s;
+    strcpy(s, newname.toLocal8Bit().data());
+
+    putuint(ci->messages, N_SWITCHNAME);
+    sendstring(s, ci->messages);
+
+    vector<uchar> renamemsg;
+    putuint(renamemsg, N_SWITCHNAME);
+    sendstring(s, renamemsg);
+
+    packetbuf p(MAXTRANS, ENET_PACKET_FLAG_RELIABLE);
+    putuint(p, N_CLIENT);
+    putint(p, ci->clientnum);
+    putint(p, renamemsg.length());
+    p.put(renamemsg.getbuf(), renamemsg.length());
+    sendpacket(ci->clientnum, 1, p.finalize(), ci->clientnum);
+    strcpy( ci->name, s);
+}
+
 QJSValue Qserver::getclientinfo(int i){ return js.newQObject((server::clientinfo*)(::getclientinfo(i))); }
 
 QString Qserver::serverauth() { return QString::fromLocal8Bit(server::serverauth);}
