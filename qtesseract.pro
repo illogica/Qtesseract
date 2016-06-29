@@ -238,7 +238,8 @@ DISTFILES += \
     src/js/api.txt \
     src/js/100-startup.js \
     src/js/001-enums.js \
-    src/js/010-vec.js
+    src/js/010-vec.js \
+    README.md
 
 
 
