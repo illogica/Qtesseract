@@ -113,6 +113,12 @@ bool Qserver::hasnonlocalclients(){ return ::hasnonlocalclients();}
 
 int Qserver::getnumclients(){ return ::getnumclients();}
 
+void Qserver::forcespectator(int cn)
+{
+    server::clientinfo* ci = (server::clientinfo*)(::getclientinfo(cn));
+    server::forcespectator(ci);
+}
+
 QJSValue Qserver::getclientinfo(int i){ return js.newQObject((server::clientinfo*)(::getclientinfo(i))); }
 
 QString Qserver::serverauth() { return QString::fromLocal8Bit(server::serverauth);}

@@ -28,7 +28,8 @@ namespace server{
     extern void sendservmsg(const char *s);
     extern int allowconnect(clientinfo *ci, const char *pwd);
     extern void connected(clientinfo *ci);
-    extern void clientdisconnect(int n);
+    extern void clientdisconnect(int n); //use very carefully, 4 hrs to solve a segfault.
+    extern void forcespectator(clientinfo *ci);
     extern clientinfo *getinfo(int n);
 
     extern char* serverauth;
@@ -86,6 +87,7 @@ public slots:
     void connected(QJSValue ci);
     bool hasnonlocalclients();
     int getnumclients();
+    void forcespectator(int cn);
     QJSValue getclientinfo(int i);
 
     //SVAR

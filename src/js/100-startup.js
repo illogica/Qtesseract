@@ -38,7 +38,8 @@ function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender){
     msg += "vel:" + vel.length().toFixed(1) + " ";
     msg += "sender:" + sender;
 
-    if(vel.length() > 100) server.disconnect_client(cp.clientnum, 3);
+    ///if(vel.length() > 100) server.disconnect_client(cp.clientnum, 3);
+    if(vel.length() > 100) server.forcespectator(cp.clientnum);
 
     //server.sendservmsg(msg);
     server.conout(Conout.CON_WARN, msg);
