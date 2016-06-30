@@ -52,9 +52,9 @@ void Qserver::reloadJs(QStringList &sources)
 }
 
 //Called by javascript
-void Qserver::registerHook(int event, QString functionName, bool bypass)
+void Qserver::registerHook(int event, QString functionName/*, bool bypass*/)
 {
-    EventData ed(functionName, bypass);
+    EventData ed(functionName, false);
     eventsMap->registerEvent(event, ed);
 }
 
@@ -64,6 +64,7 @@ bool Qserver::runEventHooks(int event, QJSValueList &capsule)
     bool bypass = false;
     for(EventData ed : eventsMap->getEventData(event)){
         if(js.globalObject().hasProperty(ed.jsFunctionName)){
+            capsule << js.toScriptValue<EventData>(ed);  //so script can edit the bypass value
             QJSValue result = js.globalObject().property(ed.jsFunctionName).call(capsule);
             if (result.isError()){
                 QString err("Uncaught exception at line");
@@ -74,6 +75,7 @@ bool Qserver::runEventHooks(int event, QJSValueList &capsule)
                 qDebug() << err;
                 logoutf(err);
             }
+            ed.bypass = (js.fromScriptValue<EventData>(capsule.last())).bypass;
         }
         bypass |= ed.bypass;
     }

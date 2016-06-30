@@ -1,22 +1,22 @@
 ---------------------
 N_CONNECT is published by a client "ci" when it wants to connect
-server.registerHook(Events.N_CONNECT, "onConnect", true);
-function onConnect(ci, password, authdesc, authname, sender, chan)
+server.registerHook(Events.N_CONNECT, "onConnect");
+function onConnect(ci, password, authdesc, authname, sender, chan, eventdata)
 ---------------------
 N_AUTHANS, to be tested yet
-server.registerHook(Events.N_AUTHANS, "onAuthAns", true);
-function onAuthAns(ci, desc, ans, id, sender, chan)
+server.registerHook(Events.N_AUTHANS, "onAuthAns");
+function onAuthAns(ci, desc, ans, id, sender, chan, eventdata)
 ---------------------
 N_PING seems to be not used.
-server.registerHook(Events.N_PING, "onPing", false);
-function onPing(ci)
+server.registerHook(Events.N_PING, "onPing");
+function onPing(ci, eventdata)
 ---------------------
 N_POS: client "cn" publishes its position and velocity.
-server.registerHook(Events.N_POS, "onPos", false);
-function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender){}
+server.registerHook(Events.N_POS, "onPos");
+function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender, eventdata){}
 
 example:
-function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender){
+function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender, eventdata){
     //note: make sure a clientinfo is !== null
     var msg = "";
     if(ci !== null)
@@ -35,7 +35,7 @@ function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender){
 }
 
 example with Vec library:
-function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender){
+function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender, eventdata){
     var pos = new Vec(posx, posy, posz);
     var vel = new Vec(velx, vely, velz);
 

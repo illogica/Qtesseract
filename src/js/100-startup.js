@@ -3,11 +3,11 @@ function startup() {
     console.log("JS startup" + Events.N_WELCOME + " hey hey hey!");
 }
 
-server.registerHook(Events.N_CONNECT, "onConnect", true);
-server.registerHook(Events.N_POS, "onPos", false);
-server.registerHook(Events.N_TEXT, "onText", false);
+server.registerHook(Events.N_CONNECT, "onConnect");
+server.registerHook(Events.N_POS, "onPos");
+server.registerHook(Events.N_TEXT, "onText");
 
-function onConnect(ci, password, authdesc, authname, sender, chan){
+function onConnect(ci, password, authdesc, authname, sender, chan, eventdata){
     var disconnect = server.allowconnect(ci, password);
 
     if(disconnect !== Disconnect.DISC_NONE){
@@ -23,9 +23,11 @@ function onConnect(ci, password, authdesc, authname, sender, chan){
     }
     server.sendservmsg("disconnect = " + disconnect);
     server.sendservmsg("client " + ci.name + " connected.");
+
+    eventdata.bypass = true; //or the server will segfault
 }
 
-function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender){
+function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender, eventdata){
     var pos = new Vec(posx, posy, posz);
     var vel = new Vec(velx, vely, velz);
 
@@ -38,9 +40,12 @@ function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender){
     msg += "vel:" + vel.length().toFixed(1) + " ";
     msg += "sender:" + sender;
 
-    ///if(vel.length() > 100) server.disconnect_client(cp.clientnum, 3);
+    if(vel.length() > 100){
+        server.disconnect_client(cp.clientnum, 3);
+        eventdata.bypass = true;
+    }
     //if(vel.length() > 100) server.forcespectator(cp.clientnum);
-    if(vel.length() > 100) server.rename(cp.clientnum, "Gino");
+    //if(vel.length() > 100) server.rename(cp.clientnum, "Gino");
     //if(vel.length() > 100) server.rename2(cp.clientnum, "Gino");
     //if(vel.length() > 100) server.playsound(cp.clientnum, Sound.S_DIE2);
 

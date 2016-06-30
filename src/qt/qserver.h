@@ -94,7 +94,7 @@ public slots:
     void reloadJs(QStringList &sources);
 
     //called from js code to register event hooks
-    void registerHook(int event, QString functionName, bool bypass);
+    void registerHook(int event, QString functionName);
 
     //server to javascript api
     void conout(int type, QString s);

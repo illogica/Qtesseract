@@ -1,6 +1,7 @@
 #ifndef EVENTDATA_H
 #define EVENTDATA_H
 
+#include <QObject>
 #include <QString>
 
 /**
@@ -9,10 +10,14 @@
  */
 struct EventData
 {
+    Q_GADGET
+    Q_PROPERTY(bool bypass MEMBER bypass)
+public:
+    EventData(){}
     EventData(QString n, bool b = false) : jsFunctionName(n), bypass(b){}
     QString jsFunctionName;
     bool bypass;
 };
-
+Q_DECLARE_METATYPE(EventData)
 
 #endif // EVENTDATA_H

@@ -2603,6 +2603,7 @@ namespace server
                 /*
                  * It's possible to add the N_POS event hook here, but for example calling client_disconnect()
                  * without skipping the following line WILL segfault the server.
+                 *
                 */
 
                 if(cp)
@@ -2634,6 +2635,7 @@ namespace server
                     capsule << sender;
                     (qserver->runEventHooks(N_POS, capsule));
                 }
+
                 break;
             }
 
@@ -2849,11 +2851,14 @@ namespace server
                 capsule << QString(text);
                 if (qserver->runEventHooks(N_TEXT, capsule)) break;
 
-                QUEUE_AI;
-                QUEUE_MSG;
+                clientinfo *cm = cq; //QUEUE_AI;
+                if(cm && (!cm->local || demorecord || hasnonlocalclients()))
+                    while(curmsg<p.length())
+                        cm->messages.add(p.buf[curmsg++]);
+                //QUEUE_MSG;
 
                 filtertext(text, text, true, true);
-                QUEUE_STR(text);
+                sendstring(text, cm->messages); //QUEUE_STR(text);
                 if(isdedicatedserver() && cq) logoutf("%s: %s", colorname(cq), text);
                 break;
             }
