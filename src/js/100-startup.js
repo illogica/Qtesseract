@@ -40,7 +40,9 @@ function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender){
 
     ///if(vel.length() > 100) server.disconnect_client(cp.clientnum, 3);
     //if(vel.length() > 100) server.forcespectator(cp.clientnum);
-    if(vel.length() > 100) server.rename(cp.clientnum, "tooFast");
+    if(vel.length() > 100) server.rename(cp.clientnum, "Gino");
+    //if(vel.length() > 100) server.rename2(cp.clientnum, "Gino");
+    //if(vel.length() > 100) server.playsound(cp.clientnum, Sound.S_DIE2);
 
     //server.sendservmsg(msg);
     server.conout(Conout.CON_WARN, msg);

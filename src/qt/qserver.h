@@ -107,6 +107,7 @@ public slots:
     int getnumclients();
     void forcespectator(int cn);
     void rename(int cn, QString newname);
+    void playsound(int cn, int sound);
     QJSValue getclientinfo(int i);
 
     //SVAR

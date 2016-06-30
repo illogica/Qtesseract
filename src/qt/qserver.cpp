@@ -125,8 +125,8 @@ void Qserver::rename(int cn, QString newname)
     string s;
     strcpy(s, newname.toLocal8Bit().data());
 
-    putuint(ci->messages, N_SWITCHNAME);
-    sendstring(s, ci->messages);
+    //putuint(ci->messages, N_SWITCHNAME);
+    //sendstring(s, ci->messages);
 
     vector<uchar> renamemsg;
     putuint(renamemsg, N_SWITCHNAME);
@@ -139,6 +139,22 @@ void Qserver::rename(int cn, QString newname)
     p.put(renamemsg.getbuf(), renamemsg.length());
     sendpacket(ci->clientnum, 1, p.finalize(), ci->clientnum);
     strcpy( ci->name, s);
+}
+
+void Qserver::playsound(int cn, int sound)
+{
+    server::clientinfo* ci = (server::clientinfo*)(::getclientinfo(cn));
+
+    vector<uchar> smsg;
+    putuint(smsg, N_SOUND);
+    putint(smsg, sound);
+
+    packetbuf p(MAXTRANS, ENET_PACKET_FLAG_RELIABLE);
+    putuint(p, N_CLIENT);
+    putint(p, ci->clientnum);
+    putint(p, smsg.length());
+    p.put(smsg.getbuf(), smsg.length());
+    sendpacket(ci->clientnum, 1, p.finalize(), ci->clientnum);
 }
 
 QJSValue Qserver::getclientinfo(int i){ return js.newQObject((server::clientinfo*)(::getclientinfo(i))); }

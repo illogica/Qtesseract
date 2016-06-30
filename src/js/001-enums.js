@@ -138,3 +138,34 @@ var Conout = {
     CON_ECHO  : 1<<5
 };
 
+var Sound = {
+    S_JUMP : 0,
+    S_LAND : 1,
+    S_SPLASHIN : 2,
+    S_SPLASHOUT : 3,
+    S_BURN : 4,
+    S_ITEMSPAWN : 5,
+    S_TELEPORT : 6,
+    S_JUMPPAD : 7,
+    S_MELEE : 8,
+    S_PULSE1 : 9,
+    S_PULSE2 : 10,
+    S_PULSEEXPLODE : 11,
+    S_RAIL1 : 12,
+    S_RAIL2 : 13,
+    S_WEAPLOAD : 14,
+    S_NOAMMO : 15,
+    S_HIT : 16,
+    S_PAIN1 : 17,
+    S_PAIN2 : 18,
+    S_DIE1 : 19,
+    S_DIE2 : 20,
+
+    S_FLAGPICKUP : 21,
+    S_FLAGDROP : 22,
+    S_FLAGRETURN : 23,
+    S_FLAGSCORE : 24,
+    S_FLAGRESET : 25,
+    S_FLAGFAIL : 26
+};
+
