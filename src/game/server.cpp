@@ -2602,9 +2602,24 @@ namespace server
 
                 /*
                  * It's possible to add the N_POS event hook here, but for example calling client_disconnect()
-                 * without skipping the following line WILL segfault the server.
+                 * without skipping the following lines WILL segfault the server.
                  *
                 */
+                if(qserver->hasEvent(N_POS)){
+                    //ci->engine = &(qserver->js);
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << qserver->js.newQObject(cp);
+                    capsule << pcn;
+                    capsule << pos[0];
+                    capsule << pos[1];
+                    capsule << pos[2];
+                    capsule << vel[0];
+                    capsule << vel[1];
+                    capsule << vel[2];
+                    capsule << sender;
+                    if(qserver->runEventHooks(N_POS, capsule)) break;
+                }
 
                 if(cp)
                 {
@@ -2620,22 +2635,6 @@ namespace server
                     cp->gameclip = (flags&0x80)!=0;
                 }
 
-                if(qserver->hasEvent(N_POS)){
-                    //ci->engine = &(qserver->js);
-                    QJSValueList capsule;
-                    capsule << qserver->js.newQObject(ci);
-                    capsule << qserver->js.newQObject(cp);
-                    capsule << pcn;
-                    capsule << pos[0];
-                    capsule << pos[1];
-                    capsule << pos[2];
-                    capsule << vel[0];
-                    capsule << vel[1];
-                    capsule << vel[2];
-                    capsule << sender;
-                    (qserver->runEventHooks(N_POS, capsule));
-                }
-
                 break;
             }
 
@@ -2643,7 +2642,21 @@ namespace server
             {
                 int pcn = getint(p), teleport = getint(p), teledest = getint(p);
                 clientinfo *cp = getinfo(pcn);
+
                 if(cp && pcn != sender && cp->ownernum != sender) cp = NULL;
+
+                if(qserver->hasEvent(N_TELEPORT)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << qserver->js.newQObject(cp); //redundant?
+                    capsule << pcn;
+                    capsule << teleport;
+                    capsule << teledest;
+                    capsule << sender;
+                    capsule << chan;
+                    if (qserver->runEventHooks(N_TELEPORT, capsule)) break;
+                }
+
                 if(cp && (!ci->local || demorecord || hasnonlocalclients()) && (cp->state.state==CS_ALIVE || cp->state.state==CS_EDITING))
                 {
                     flushclientposition(*cp);
@@ -2658,6 +2671,18 @@ namespace server
                 int pcn = getint(p), jumppad = getint(p);
                 clientinfo *cp = getinfo(pcn);
                 if(cp && pcn != sender && cp->ownernum != sender) cp = NULL;
+
+                if(qserver->hasEvent(N_JUMPPAD)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << qserver->js.newQObject(cp); //redundant?
+                    capsule << pcn;
+                    capsule << jumppad;
+                    capsule << sender;
+                    capsule << chan;
+                    if (qserver->runEventHooks(N_JUMPPAD, capsule)) break;
+                }
+
                 if(cp && (!ci->local || demorecord || hasnonlocalclients()) && (cp->state.state==CS_ALIVE || cp->state.state==CS_EDITING))
                 {
                     cp->setpushed();
@@ -2671,6 +2696,16 @@ namespace server
             case N_FROMAI:
             {
                 int qcn = getint(p);
+
+                if(qserver->hasEvent(N_FROMAI)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << qcn;
+                    capsule << sender;
+                    capsule << chan;
+                    if (qserver->runEventHooks(N_FROMAI, capsule)) break;
+                }
+
                 if(qcn < 0) cq = ci;
                 else
                 {
@@ -2684,6 +2719,16 @@ namespace server
             case N_EDITMODE:
             {
                 int val = getint(p);
+
+                if(qserver->hasEvent(N_EDITMODE)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << val;
+                    capsule << sender;
+                    capsule << chan;
+                    if (qserver->runEventHooks(N_EDITMODE, capsule)) break;
+                }
+
                 if(!ci->local && !m_edit) break;
                 if(val ? ci->state.state!=CS_ALIVE && ci->state.state!=CS_DEAD : ci->state.state!=CS_EDITING) break;
                 if(smode)
@@ -2708,7 +2753,18 @@ namespace server
             {
                 getstring(text, p);
                 int crc = getint(p);
+
+                if(qserver->hasEvent(N_MAPCRC)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << crc;
+                    capsule << sender;
+                    capsule << chan;
+                    if (qserver->runEventHooks(N_MAPCRC, capsule)) break;
+                }
+
                 if(!ci) break;
+
                 if(strcmp(text, smapname))
                 {
                     if(ci->clientmap[0])
@@ -2728,10 +2784,26 @@ namespace server
             }
 
             case N_CHECKMAPS:
+                if(qserver->hasEvent(N_CHECKMAPS)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << sender;
+                    capsule << chan;
+                    if (qserver->runEventHooks(N_CHECKMAPS, capsule)) break;
+                }
                 checkmaps(sender);
                 break;
 
             case N_TRYSPAWN:
+                if(qserver->hasEvent(N_TRYSPAWN)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << qserver->js.newQObject(cq);
+                    capsule << sender;
+                    capsule << chan;
+                    if (qserver->runEventHooks(N_TRYSPAWN, capsule)) break;
+                }
+
                 if(!ci || !cq || cq->state.state!=CS_DEAD || cq->state.lastspawn>=0 || (smode && !smode->canspawn(cq))) break;
                 if(!ci->clientmap[0] && !ci->mapcrc)
                 {
@@ -2752,6 +2824,16 @@ namespace server
             case N_GUNSELECT:
             {
                 int gunselect = getint(p);
+
+                if(qserver->hasEvent(N_GUNSELECT)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << gunselect;
+                    capsule << sender;
+                    capsule << chan;
+                    if (qserver->runEventHooks(N_GUNSELECT, capsule)) break;
+                }
+
                 if(!cq || cq->state.state!=CS_ALIVE || !validgun(gunselect)) break;
                 QUEUE_AI;
                 QUEUE_MSG;
@@ -2761,6 +2843,19 @@ namespace server
             case N_SPAWN:
             {
                 int ls = getint(p), gunselect = getint(p);
+
+                if(qserver->hasEvent(N_SPAWN)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << qserver->js.newQObject(cq);
+                    capsule << qserver->js.newQObject(cm);
+                    capsule << ls;
+                    capsule << gunselect;
+                    capsule << sender;
+                    capsule << chan;
+                    if (qserver->runEventHooks(N_SPAWN, capsule)) break;
+                }
+
                 if(!cq || (cq->state.state!=CS_ALIVE && cq->state.state!=CS_DEAD && cq->state.state!=CS_EDITING) || ls!=cq->state.lifesequence || cq->state.lastspawn<0 || !validgun(gunselect)) break;
                 cq->state.lastspawn = -1;
                 cq->state.state = CS_ALIVE;
@@ -2777,6 +2872,14 @@ namespace server
 
             case N_SUICIDE:
             {
+                if(qserver->hasEvent(N_SUICIDE)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << qserver->js.newQObject(cq);
+                    capsule << sender;
+                    capsule << chan;
+                    if (qserver->runEventHooks(N_SUICIDE, capsule)) break;
+                }
                 if(cq) cq->addevent(new suicideevent);
                 break;
             }
@@ -2800,6 +2903,20 @@ namespace server
                     hit.rays = getint(p);
                     loopk(3) hit.dir[k] = getint(p)/DNF;
                 }
+
+                if(qserver->hasEvent(N_SHOOT)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << qserver->js.newQObject(cq);
+                    capsule << qserver->js.newQObject(shot);
+                    capsule << sender;
+                    capsule << chan;
+                    if (qserver->runEventHooks(N_SHOOT, capsule)){
+                        delete shot;
+                        break;
+                    }
+                }
+
                 if(cq)
                 {
                     cq->addevent(shot);

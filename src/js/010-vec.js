@@ -141,3 +141,12 @@ Vec.prototype.clone = function(){
 Vec.prototype.isZero = function(){
     return (this.length() < 0.0001);
 }
+
+/*
+  Needed for vec assignements:
+    var newFrom = new Vec(1.0, 2.0, 3.0);
+    shot.from = newFrom.toArray();
+*/
+Vec.prototype.toArray = function(){
+    return [this.x, this.y, this.z]
+}

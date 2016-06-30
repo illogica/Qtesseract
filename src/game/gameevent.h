@@ -6,9 +6,9 @@ namespace server {
 
     class clientinfo;
 
-    class gameevent
+    class gameevent : public QObject
     {
-        Q_GADGET
+        Q_OBJECT
     public:
         virtual ~gameevent() {}
     public slots:
@@ -20,7 +20,5 @@ namespace server {
     };
 
 }
-
-Q_DECLARE_METATYPE(server::gameevent)
 
 #endif // GAMEEVENT_H

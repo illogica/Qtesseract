@@ -1,12 +1,16 @@
 #ifndef HITINFO_H
 #define HITINFO_H
 
-struct vec;
+#include <QObject>
+#include "vec.h"
 
 namespace server {
-    class hitinfo
+    class hitinfo : public QObject
     {
+        Q_OBJECT
     public:
+        hitinfo(QObject *parent = 0){}
+        ~hitinfo(){}
         int target;
         int lifesequence;
         int rays;

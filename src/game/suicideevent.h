@@ -7,7 +7,12 @@
 namespace server {
     class suicideevent : public gameevent
     {
+        Q_OBJECT
     public:
+        suicideevent(QObject *parent = 0){}
+        ~suicideevent(){}
+
+    public slots:
         void process(clientinfo *ci);
     };
 
