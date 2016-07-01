@@ -244,7 +244,8 @@ DISTFILES += \
     README.md \
     src/js/050-jscommands.js \
     src/js/051-commandhelp.js \
-    src/js/052-commandinfo.js
+    src/js/052-commandinfo.js \
+    src/js/053-commandjs.js
 
 
 
