@@ -2944,6 +2944,21 @@ namespace server
                     hit.rays = getint(p);
                     loopk(3) hit.dir[k] = getint(p)/DNF;
                 }
+
+
+                if(qserver->hasEvent(N_EXPLODE)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << qserver->js.newQObject(cq);
+                    capsule << qserver->js.newQObject(exp);
+                    capsule << sender;
+                    capsule << chan;
+                    if (qserver->runEventHooks(N_EXPLODE, capsule)){
+                        delete exp;
+                        break;
+                    }
+                }
+
                 if(cq) cq->addevent(exp);
                 else delete exp;
                 break;
@@ -2955,6 +2970,17 @@ namespace server
                 if(!cq) break;
                 pickupevent *pickup = new pickupevent;
                 pickup->ent = n;
+
+                if(qserver->hasEvent(N_ITEMPICKUP)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << qserver->js.newQObject(cq);
+                    capsule << qserver->js.newQObject(pickup);
+                    capsule << sender;
+                    capsule << chan;
+                    if (qserver->runEventHooks(N_ITEMPICKUP, capsule)) break;
+                }
+
                 cq->addevent(pickup);
                 break;
             }

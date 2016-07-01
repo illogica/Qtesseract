@@ -85,6 +85,25 @@ bool Qserver::runEventHooks(int event, QJSValueList &capsule)
 
 void Qserver::conout(int type, QString s){ ::conoutf(type, s.toLocal8Bit().data());}
 void Qserver::sendservmsg(QString s){  server::sendservmsg(s.toLocal8Bit().data()); }
+
+void Qserver::sendplayermsg(int cn, QString msg)
+{
+    server::clientinfo* ci = (server::clientinfo*)(::getclientinfo(cn));
+    string s;
+    strcpy(s, msg.toLocal8Bit().data());
+
+    vector<uchar> playermsg;
+    putuint(playermsg, N_SERVMSG);
+    sendstring(s, playermsg);
+
+    packetbuf p(MAXTRANS, ENET_PACKET_FLAG_RELIABLE);
+    putuint(p, N_CLIENT);
+    putint(p, ci->clientnum);
+    putint(p, playermsg.length());
+    p.put(playermsg.getbuf(), playermsg.length());
+    sendpacket(ci->clientnum, 1, p.finalize(), -1);
+}
+
 void Qserver::logoutf(QString s){ ::logoutf(s.toLocal8Bit().data()); }
 
 int Qserver::allowconnect(QJSValue ci, QString pwd)
@@ -139,7 +158,7 @@ void Qserver::rename(int cn, QString newname)
     putint(p, ci->clientnum);
     putint(p, renamemsg.length());
     p.put(renamemsg.getbuf(), renamemsg.length());
-    sendpacket(ci->clientnum, 1, p.finalize(), ci->clientnum);
+    sendpacket(ci->clientnum, 1, p.finalize(), -1);
     strcpy( ci->name, s);
 }
 
@@ -156,7 +175,7 @@ void Qserver::playsound(int cn, int sound)
     putint(p, ci->clientnum);
     putint(p, smsg.length());
     p.put(smsg.getbuf(), smsg.length());
-    sendpacket(ci->clientnum, 1, p.finalize(), ci->clientnum);
+    sendpacket(ci->clientnum, 1, p.finalize(), -1);
 }
 
 QJSValue Qserver::getclientinfo(int i){ return js.newQObject((server::clientinfo*)(::getclientinfo(i))); }

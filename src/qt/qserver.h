@@ -99,6 +99,7 @@ public slots:
     //server to javascript api
     void conout(int type, QString s);
     void sendservmsg(QString s);
+    void sendplayermsg(int cn, QString msg);
     void logoutf(QString s);
     int allowconnect(QJSValue ci, QString pwd);
     void disconnect_client(int clientnum, int disconnect_reason);

@@ -241,7 +241,10 @@ DISTFILES += \
     src/js/100-startup.js \
     src/js/001-enums.js \
     src/js/010-vec.js \
-    README.md
+    README.md \
+    src/js/050-jscommands.js \
+    src/js/051-commandhelp.js \
+    src/js/052-commandinfo.js
 
 
 

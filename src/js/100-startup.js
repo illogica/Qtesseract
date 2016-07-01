@@ -17,6 +17,7 @@ server.registerHook(Events.N_GUNSELECT, "onGunselect");
 server.registerHook(Events.N_SPAWN, "onSpawn");
 server.registerHook(Events.N_SUICIDE, "onSuicide");
 server.registerHook(Events.N_SHOOT, "onShoot");
+server.registerHook(Events.N_ITEMPICKUP, "onItempickup");
 
 function onConnect(ci, password, authdesc, authname, sender, chan, eventdata){
     var disconnect = server.allowconnect(ci, password);
@@ -152,8 +153,8 @@ function onSuicide(ci, cq, sender, chan, eventdata){
 }
 
 function onShoot(ci, cq, shot, sender, chan, eventdata){
-    var newFrom = new Vec(1.0, 2.0, 3.0);
-    shot.from = newFrom.toArray();
+    //var newFrom = new Vec(1.0, 2.0, 3.0);
+    //shot.from = newFrom.toArray();
 
     var msg = "N_SHOOT ";
     if(ci) {msg += "ci: " + ci.name + " ";}
@@ -164,7 +165,21 @@ function onShoot(ci, cq, shot, sender, chan, eventdata){
     server.sendservmsg(msg);
 }
 
-
-function onText(ci, text){
-    server.sendservmsg(text);
+function onExplode(ci, cq, exp, sender, chan, eventdata){
+    var msg = "N_EXPLODE ";
+    if(ci) {msg += "ci: " + ci.name + " ";}
+    if(cq) {msg += "cq: " + cq.name + " ";}
+    msg += "exp.id: " + exp.id;
+    msg += "sndr: " + sender;
+    server.sendservmsg(msg);
 }
+
+function onItempickup(ci, cq, pickup, sender, chan, eventdata){
+    var msg = "N_ITEMPICKUP ";
+    if(ci) {msg += "ci: " + ci.name + " ";}
+    if(cq) {msg += "cq: " + cq.name + " ";}
+    msg += "pickup.ent: " + pickup.ent;
+    msg += "sndr: " + sender;
+    server.sendservmsg(msg);
+}
+
