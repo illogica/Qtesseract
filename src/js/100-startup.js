@@ -1,7 +1,8 @@
 
-function startup() {
-    console.log("JS startup" + Events.N_WELCOME + " hey hey hey!");
-}
+server.maxclients(16);
+//FIXMEEEE
+//server.servermotd("Welcome to Pastaland! Type #help for more cool stuff.");
+server.servermotd("Welcome to Pastaland!");
 
 server.registerHook(Events.N_CONNECT, "onConnect");
 server.registerHook(Events.N_POS, "onPos");

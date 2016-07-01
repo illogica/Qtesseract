@@ -207,6 +207,8 @@ void Qserver::quit() {::quit();}
 
 void Qserver::maxclients(int n){::maxclients = n;}
 
+void Qserver::servermotd(QString s){server::servermotd = s.toLocal8Bit().data();}
+
 QJSValue Qserver::getclientinfo(int i){ return js.newQObject((server::clientinfo*)(::getclientinfo(i))); }
 
 QString Qserver::serverauth() { return QString::fromLocal8Bit(server::serverauth);}
