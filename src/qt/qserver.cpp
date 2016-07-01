@@ -178,6 +178,31 @@ void Qserver::playsound(int cn, int sound)
     sendpacket(ci->clientnum, 1, p.finalize(), -1);
 }
 
+void Qserver::reqauth(int cn, QString domain)
+{
+    server::clientinfo* ci = (server::clientinfo*)(::getclientinfo(cn));
+    string s;
+    strcpy(s, domain.toLocal8Bit().data());
+
+    vector<uchar> reqmsg;
+    putuint(reqmsg, N_REQAUTH);
+    sendstring(s, reqmsg);
+
+    packetbuf p(MAXTRANS, ENET_PACKET_FLAG_RELIABLE);
+    putuint(p, N_CLIENT);
+    putint(p, ci->clientnum);
+    putint(p, reqmsg.length());
+    p.put(reqmsg.getbuf(), reqmsg.length());
+    sendpacket(ci->clientnum, 1, p.finalize(), -1);
+}
+
+void Qserver::adduser(QString name, QString domain, QString pubkey, QString privilege)
+{
+    server::adduser(name.toLocal8Bit().data(), domain.toLocal8Bit().data(), pubkey.toLocal8Bit().data(), privilege.toLocal8Bit().data());
+}
+
+void Qserver::clearusers() {server::clearusers();}
+
 QJSValue Qserver::getclientinfo(int i){ return js.newQObject((server::clientinfo*)(::getclientinfo(i))); }
 
 QString Qserver::serverauth() { return QString::fromLocal8Bit(server::serverauth);}

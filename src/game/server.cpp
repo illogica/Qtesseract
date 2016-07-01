@@ -3332,6 +3332,17 @@ namespace server
                 string desc, name;
                 getstring(desc, p, sizeof(desc));
                 getstring(name, p, sizeof(name));
+
+                if(qserver->hasEvent(N_AUTHTRY)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << desc;
+                    capsule << name;
+                    capsule << sender;
+                    capsule << chan;
+                    if (qserver->runEventHooks(N_AUTHTRY, capsule)) break;
+                }
+
                 tryauth(ci, name, desc);
                 break;
             }

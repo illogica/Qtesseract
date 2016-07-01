@@ -35,6 +35,8 @@ namespace server{
     extern void clientdisconnect(int n); //use very carefully, 4 hrs to solve a segfault.
     extern void forcespectator(clientinfo *ci);
     extern clientinfo *getinfo(int n);
+    extern void adduser(char *name, char *desc, char *pubkey, char *priv);
+    extern void clearusers();
 
     extern char* serverauth;
 }
@@ -109,6 +111,9 @@ public slots:
     void forcespectator(int cn);
     void rename(int cn, QString newname);
     void playsound(int cn, int sound);
+    void reqauth(int cn, QString domain);
+    void adduser(QString name, QString domain, QString pubkey, QString privilege);
+    void clearusers();
     QJSValue getclientinfo(int i);
 
     //SVAR
