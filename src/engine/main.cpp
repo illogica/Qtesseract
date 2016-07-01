@@ -4,6 +4,8 @@
 
 extern void cleargamma();
 
+int dedicated = 0;
+
 void cleanup()
 {
     recorder::stop();
@@ -13,7 +15,7 @@ void cleanup()
     if(screen) SDL_SetWindowGrab(screen, SDL_FALSE);
     cleargamma();
     freeocta(worldroot);
-    UI::cleanup();
+    if(!dedicated) UI::cleanup();
     extern void clear_command(); clear_command();
     extern void clear_console(); clear_console();
     extern void clear_models();  clear_models();
@@ -34,8 +36,9 @@ void quit()                     // normal exit
     abortconnect();
     disconnect();
     localdisconnect();
-    writecfg();
+    if(!dedicated)writecfg(); //edit
     cleanup();
+    QApplication::quit();
     exit(EXIT_SUCCESS);
 }
 
@@ -1008,7 +1011,6 @@ int main(int argc, char **argv)
 
     setlogfile(NULL);
 
-    int dedicated = 0;
     char *load = NULL, *initscript = NULL;
 
     initing = INIT_RESET;

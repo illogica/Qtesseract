@@ -169,3 +169,22 @@ var Sound = {
     S_FLAGFAIL : 26
 };
 
+var Privilege = {
+    PRIV_NONE : 0,
+    PRIV_MASTER : 1,
+    PRIV_AUTH : 2,
+    PRIV_ADMIN : 3
+};
+
+var GameMode = {
+    M_TEAM       : 1<<0,
+    M_CTF        : 1<<1,
+    M_OVERTIME   : 1<<2,
+    M_EDIT       : 1<<3,
+    M_DEMO       : 1<<4,
+    M_LOCAL      : 1<<5,
+    M_LOBBY      : 1<<6,
+    M_RAIL       : 1<<7,
+    M_PULSE      : 1<<8
+};
+

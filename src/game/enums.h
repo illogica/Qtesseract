@@ -2,7 +2,7 @@
 #define ENUMS_H
 
 // ET_*: the only static entity types dictated by the engine... rest are gamecode dependent
-enum StaticEntities{
+enum StaticEntity{
     ET_EMPTY=0,
     ET_LIGHT,
     ET_MAPMODEL,
@@ -44,7 +44,7 @@ enum
 };
 
 // animations
-enum Animations
+enum Animation
 {
     ANIM_DEAD = ANIM_GAMESPECIFIC, ANIM_DYING,
     ANIM_IDLE, ANIM_RUN_N, ANIM_RUN_NE, ANIM_RUN_E, ANIM_RUN_SE, ANIM_RUN_S, ANIM_RUN_SW, ANIM_RUN_W, ANIM_RUN_NW,
@@ -72,7 +72,7 @@ enum Console
     CON_TEAMKILL   = 1<<13
 };
 
-enum Entities                           // static entity types
+enum Entity                           // static entity types
 {
     NOTUSED = ET_EMPTY,         // entity slot not in use in map
     LIGHT = ET_LIGHT,           // lightsource, attr1 = radius, attr2 = intensity
@@ -93,11 +93,11 @@ enum Entities                           // static entity types
     I_LAST = -1
 };
 
-enum Weapons { GUN_RAIL = 0, GUN_PULSE, NUMGUNS };
-enum Actions { ACT_IDLE = 0, ACT_SHOOT, ACT_MELEE, NUMACTS };
-enum Attacks { ATK_RAIL_SHOOT = 0, ATK_RAIL_MELEE, ATK_PULSE_SHOOT, ATK_PULSE_MELEE, NUMATKS };
+enum Weapon { GUN_RAIL = 0, GUN_PULSE, NUMGUNS };
+enum Action { ACT_IDLE = 0, ACT_SHOOT, ACT_MELEE, NUMACTS };
+enum Attack { ATK_RAIL_SHOOT = 0, ATK_RAIL_MELEE, ATK_PULSE_SHOOT, ATK_PULSE_MELEE, NUMATKS };
 
-enum GameModes
+enum GameMode
 {
     M_TEAM       = 1<<0,
     M_CTF        = 1<<1,
@@ -111,7 +111,7 @@ enum GameModes
 };
 
 // hardcoded sounds, defined in sounds.cfg
-enum Sounds
+enum Sound
 {
     S_JUMP = 0, S_LAND,
     S_SPLASHIN, S_SPLASHOUT, S_BURN,

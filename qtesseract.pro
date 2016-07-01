@@ -246,7 +246,10 @@ DISTFILES += \
     src/js/051-commandhelp.js \
     src/js/052-commandinfo.js \
     src/js/053-commandjs.js \
-    src/js/030-authkeys.js
+    src/js/030-authkeys.js \
+    src/js/054-commandmaxclients.js \
+    src/js/055-commandquit.js \
+    src/js/056-commandrename.js
 
 
 

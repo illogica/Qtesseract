@@ -203,6 +203,10 @@ void Qserver::adduser(QString name, QString domain, QString pubkey, QString priv
 
 void Qserver::clearusers() {server::clearusers();}
 
+void Qserver::quit() {::quit();}
+
+void Qserver::maxclients(int n){::maxclients = n;}
+
 QJSValue Qserver::getclientinfo(int i){ return js.newQObject((server::clientinfo*)(::getclientinfo(i))); }
 
 QString Qserver::serverauth() { return QString::fromLocal8Bit(server::serverauth);}

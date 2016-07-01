@@ -51,6 +51,8 @@ extern bool hasnonlocalclients();
 extern ENetPacket *sendf(int cn, int chan, const char *format, ...);
 extern void sendpacket(int n, int chan, ENetPacket *packet, int exclude);
 
+extern int maxclients;
+
 void logoutf(const char *fmt, ...);
 extern void conoutf(int type, const char *fmt, ...);
 
@@ -64,6 +66,9 @@ extern void putuint(vector<uchar> &p, int n);
 extern void sendstring(const char *t, ucharbuf &p);
 extern void sendstring(const char *t, packetbuf &p);
 extern void sendstring(const char *t, vector<uchar> &p);
+
+// engine/main.cpp
+extern void quit();
 
 
 /**
@@ -114,6 +119,8 @@ public slots:
     void reqauth(int cn, QString domain);
     void adduser(QString name, QString domain, QString pubkey, QString privilege);
     void clearusers();
+    void quit();
+    void maxclients(int n);
     QJSValue getclientinfo(int i);
 
     //SVAR
