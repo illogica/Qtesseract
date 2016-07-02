@@ -1,3 +1,22 @@
+/**
+
+  A simple math Vector library encapsulating 3 floats.
+  Useful to work with Tesseract 'vec' class.
+  Note: the 'vec' c++ class is not directly accessible by the js environment. Vecs are passed by
+  their internal values (they don't extend QObject, to keep them very light),
+  and need to be reassigned before the function returns if you want to modify them, e.g.:
+
+function onShoot(ci, cq, shot, sender, chan, eventdata){
+    //shot is a c++ object with two vec: from and to
+
+    var newFrom = new Vec(1.0, 2.0, 3.0); //create a new Vec js object
+
+    [...]
+
+    shot.from = newFrom.toArray(); // save it into the c++ vec struct
+}
+
+  */
 
 function Vec(x, y, z) {
     this.x = x || 0;

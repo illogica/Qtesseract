@@ -1,3 +1,11 @@
+/**
+
+  Handler for the #maxclients command
+
+  #maxclients <n> will change the maximum number of slots
+
+  */
+
 commands.add(new Command("maxclients", commandMaxClients, "#maxclients <n>: Change the maximum number of allowed players to n"));
 function commandMaxClients(ci, args){
     if(ci.privilege < Privilege.PRIV_ADMIN)

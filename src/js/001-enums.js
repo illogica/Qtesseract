@@ -1,3 +1,11 @@
+/**
+
+  Enums to be used in all other .js files.
+  There's no need to "import" or "include", they are all loaded into the
+  global object and can be addressed simply by e.g. Events.N_CONNECT
+
+  */
+
 var Events = {
     N_CONNECT       : 0,
     N_SERVINFO      : 1,
@@ -105,6 +113,11 @@ var Events = {
     N_DEMOPACKET    :103,
     NUMMSG          :104
 };
+
+var FunctionEvent = {
+    F_CONNECTEDPRE : 200,
+    F_CONNECTEDPOST : 201
+}
 
 var Disconnect = {
     DISC_NONE: 0,

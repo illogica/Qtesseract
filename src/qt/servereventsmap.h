@@ -13,7 +13,9 @@ public:
     bool hasEvent(int event);
     QList<EventData> &getEventData(int event);
 
-    static const int EVENTS_QTY = 150; //0 to 104 is the current number of defined possible network events
+    //0 to 104 is the current number of defined possible network events
+    //from 200 onwoard there are function hooks
+    static const int EVENTS_QTY = 300;
 
 private:
     void resetEventsMap();

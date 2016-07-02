@@ -1,25 +1,22 @@
+/**
+
+  MAIN SERVER CONFIGURATION
+
+  */
 
 server.maxclients(16);
-//FIXMEEEE
-//server.servermotd("Welcome to Pastaland! Type #help for more cool stuff.");
-server.servermotd("Welcome to Pastaland!");
 
+var motd = "Welcome to Pastaland! Type \f4#help\f7 for more cool stuff, come visit \f2Pastaland.ovh\f7 for more info";
+
+server.registerHook(FunctionEvent.F_CONNECTEDPOST, "onPostConnected");
+function onPostConnected(ci, eventdata){
+    server.sendplayermsg(ci.clientnum, motd);
+}
+
+
+
+// Handle the server connection on the JS side
 server.registerHook(Events.N_CONNECT, "onConnect");
-server.registerHook(Events.N_POS, "onPos");
-server.registerHook(Events.N_TEXT, "onText");
-server.registerHook(Events.N_TELEPORT, "onTeleport");
-server.registerHook(Events.N_JUMPPAD, "onJumppad");
-server.registerHook(Events.N_FROMAI, "onFromai");
-server.registerHook(Events.N_MAPCRC, "onMapcrc");
-server.registerHook(Events.N_CHECKMAPS, "onCheckmaps");
-server.registerHook(Events.N_EDITMODE, "onEditmode");
-server.registerHook(Events.N_TRYSPAWN, "onTryspawn");
-server.registerHook(Events.N_GUNSELECT, "onGunselect");
-server.registerHook(Events.N_SPAWN, "onSpawn");
-server.registerHook(Events.N_SUICIDE, "onSuicide");
-server.registerHook(Events.N_SHOOT, "onShoot");
-server.registerHook(Events.N_ITEMPICKUP, "onItempickup");
-
 function onConnect(ci, password, authdesc, authname, sender, chan, eventdata){
     var disconnect = server.allowconnect(ci, password);
 
@@ -34,12 +31,22 @@ function onConnect(ci, password, authdesc, authname, sender, chan, eventdata){
     } else {
         server.connected(ci);
     }
-    server.sendservmsg("disconnect = " + disconnect);
-    server.sendservmsg("client " + ci.name + " connected.");
 
     eventdata.bypass = true; //or the server will segfault
 }
 
+
+/**
+
+  Some event hoolk examples follow
+
+  */
+
+
+//server.registerHook(Events.N_TEXT, "onText");
+
+/*
+server.registerHook(Events.N_POS, "onPos");
 function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender, eventdata){
     var pos = new Vec(posx, posy, posz);
     var vel = new Vec(velx, vely, velz);
@@ -65,7 +72,10 @@ function onPos(ci, cp, pcn, posx, posy, posz, velx, vely, velz, sender, eventdat
     //server.sendservmsg(msg);
     //server.conout(Conout.CON_WARN, msg);
 }
+*/
 
+/*
+server.registerHook(Events.N_TELEPORT, "onTeleport");
 function onTeleport(ci, cp, pcn, teleport, teledest, sender, chan, eventdata){
     var msg = "N_TELEPORT";
     msg += "ci: " + ci.name + " ";
@@ -76,7 +86,10 @@ function onTeleport(ci, cp, pcn, teleport, teledest, sender, chan, eventdata){
     msg += "sndr: " + sender;
     server.sendservmsg(msg);
 }
+*/
 
+/*
+server.registerHook(Events.N_JUMPPAD, "onJumppad");
 function onJumppad(ci, cp, pcn, jumppad, sender, chan, eventdata){
     var msg = "N_JUMPPAD ";
     msg += "ci: " + ci.name + " ";
@@ -86,7 +99,10 @@ function onJumppad(ci, cp, pcn, jumppad, sender, chan, eventdata){
     msg += "sndr: " + sender;
     server.sendservmsg(msg);
 }
+*/
 
+/*
+server.registerHook(Events.N_FROMAI, "onFromai");
 function onFromai(ci, qcn, sender, chan, eventdata){
     var msg = "N_FROMAI ";
     msg += "ci: " + ci.name + " ";
@@ -94,7 +110,10 @@ function onFromai(ci, qcn, sender, chan, eventdata){
     msg += "sndr: " + sender;
     //server.sendservmsg(msg); //this is quite verbose
 }
+*/
 
+/*
+server.registerHook(Events.N_MAPCRC, "onMapcrc");
 function onMapcrc(ci, crc, sender, chan, eventdata){
     var msg = "N_MAPCRC ";
     msg += "ci: " + ci.name + " ";
@@ -102,21 +121,30 @@ function onMapcrc(ci, crc, sender, chan, eventdata){
     msg += "sndr: " + sender;
     server.sendservmsg(msg);
 }
+*/
 
+/*
+server.registerHook(Events.N_CHECKMAPS, "onCheckmaps");
 function onCheckmaps(ci, sender, chan, eventdata){
     var msg = "N_CHECKMAPS ";
     msg += "ci: " + ci.name + " ";
     msg += "sndr: " + sender;
     server.sendservmsg(msg);
 }
+*/
 
+/*
+server.registerHook(Events.N_EDITMODE, "onEditmode");
 function onEditmode(ci, val, sender, chan, eventdata){
     var msg = "N_CHECKMAPS ";
     msg += "ci: " + ci.name + " ";
     msg += "sndr: " + sender;
     server.sendservmsg(msg);
 }
+*/
 
+/*
+server.registerHook(Events.N_TRYSPAWN, "onTryspawn");
 function onTryspawn(ci, cq, sender, chan, eventdata){
     var msg = "N_TRYSPAWN ";
     if(ci) {msg += "ci: " + ci.name + " ";}
@@ -124,7 +152,10 @@ function onTryspawn(ci, cq, sender, chan, eventdata){
     msg += "sndr: " + sender;
     server.sendservmsg(msg);
 }
+*/
 
+/*
+server.registerHook(Events.N_GUNSELECT, "onGunselect");
 function onGunselect(ci, gunselect, sender, chan, eventdata){
     var msg = "N_GUNSELECT ";
     if(ci) {msg += "ci: " + ci.name + " ";}
@@ -133,7 +164,10 @@ function onGunselect(ci, gunselect, sender, chan, eventdata){
     msg += "sndr: " + sender;
     server.sendservmsg(msg);
 }
+*/
 
+/*
+server.registerHook(Events.N_SPAWN, "onSpawn");
 function onSpawn(ci, cq, cm, ls, gunselect, sender, chan, eventdata){
     var msg = "N_SPAWN ";
     if(ci) {msg += "ci: " + ci.name + " ";}
@@ -144,7 +178,10 @@ function onSpawn(ci, cq, cm, ls, gunselect, sender, chan, eventdata){
     msg += "sndr: " + sender;
     server.sendservmsg(msg);
 }
+*/
 
+/*
+server.registerHook(Events.N_SUICIDE, "onSuicide");
 function onSuicide(ci, cq, sender, chan, eventdata){
     var msg = "N_SUICIDE ";
     if(ci) {msg += "ci: " + ci.name + " ";}
@@ -152,7 +189,10 @@ function onSuicide(ci, cq, sender, chan, eventdata){
     msg += "sndr: " + sender;
     server.sendservmsg(msg);
 }
+*/
 
+/*
+server.registerHook(Events.N_SHOOT, "onShoot");
 function onShoot(ci, cq, shot, sender, chan, eventdata){
     //var newFrom = new Vec(1.0, 2.0, 3.0);
     //shot.from = newFrom.toArray();
@@ -165,7 +205,10 @@ function onShoot(ci, cq, shot, sender, chan, eventdata){
     msg += "sndr: " + sender;
     server.sendservmsg(msg);
 }
+*/
 
+/*
+server.registerHook(Events.N_EXPLODE, "onExplode");
 function onExplode(ci, cq, exp, sender, chan, eventdata){
     var msg = "N_EXPLODE ";
     if(ci) {msg += "ci: " + ci.name + " ";}
@@ -174,7 +217,10 @@ function onExplode(ci, cq, exp, sender, chan, eventdata){
     msg += "sndr: " + sender;
     server.sendservmsg(msg);
 }
+*/
 
+/*
+server.registerHook(Events.N_ITEMPICKUP, "onItempickup");
 function onItempickup(ci, cq, pickup, sender, chan, eventdata){
     var msg = "N_ITEMPICKUP ";
     if(ci) {msg += "ci: " + ci.name + " ";}
@@ -183,4 +229,4 @@ function onItempickup(ci, cq, pickup, sender, chan, eventdata){
     msg += "sndr: " + sender;
     server.sendservmsg(msg);
 }
-
+*/

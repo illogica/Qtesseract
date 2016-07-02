@@ -1,3 +1,11 @@
+/**
+
+  Management for the #commands, whcih are commands to be typed at the chat prompt.
+  If a line at the chat prompt starts with the # character, this script
+  gets engaged.
+
+  */
+
 server.registerHook(Events.N_TEXT, "jsCommands");
 
 function Commands(){

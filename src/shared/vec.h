@@ -2,7 +2,7 @@
 #define VEC_H
 
 #include <QObject>
-#include "math.h"
+#include "cmath"
 #include "loops.h"
 #include "comparison.h"
 

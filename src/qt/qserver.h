@@ -39,7 +39,6 @@ namespace server{
     extern void clearusers();
 
     extern char* serverauth;
-    extern char* servermotd;
 }
 
 // engine/server.cpp
@@ -122,7 +121,6 @@ public slots:
     void clearusers();
     void quit();
     void maxclients(int n);
-    void servermotd(QString s);
     QJSValue getclientinfo(int i);
 
     //SVAR

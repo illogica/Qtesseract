@@ -2423,6 +2423,12 @@ namespace server
 
     void connected(clientinfo *ci)
     {
+        if(qserver->hasEvent(F_CONNECTEDPRE)){
+            QJSValueList capsule;
+            capsule << qserver->js.newQObject(ci);
+            if (qserver->runEventHooks(F_CONNECTEDPRE, capsule)) return;
+        }
+
         if(m_demo) enddemoplayback();
 
         if(!hasmap(ci)) rotatemap(false);
@@ -2449,6 +2455,12 @@ namespace server
         if(m_demo) setupdemoplayback();
 
         if(servermotd[0]) sendf(ci->clientnum, 1, "ris", N_SERVMSG, servermotd);
+
+        if(qserver->hasEvent(F_CONNECTEDPOST)){
+            QJSValueList capsule;
+            capsule << qserver->js.newQObject(ci);
+            qserver->runEventHooks(F_CONNECTEDPOST, capsule);
+        }
     }
 
     void parsepacket(int sender, int chan, packetbuf &p)     // has to parse exactly each byte of the packet

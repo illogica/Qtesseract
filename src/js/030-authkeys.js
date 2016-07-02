@@ -1,3 +1,11 @@
+/**
+
+  Authkeys management
+
+  If automatic js loading is not disabled, all keys added to this file will
+  be loaded instantly into the server.
+
+  */
 
 server.clearusers();
 

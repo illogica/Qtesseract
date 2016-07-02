@@ -175,5 +175,10 @@ enum
     HICON_SPACE   = 40
 };
 
+enum{       //functions hooks
+    F_CONNECTEDPRE = 200,
+    F_CONNECTEDPOST = 201
+};
+
 
 #endif // ENUMS_H

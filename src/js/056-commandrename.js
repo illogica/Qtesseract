@@ -1,3 +1,11 @@
+/**
+
+  Handler for the #rename command
+
+  #rename <cn> <opt:newname> will rename player cn to 'unnamed' or to 'newname' if provided
+
+  */
+
 commands.add(new Command("rename", commandRename, "#rename <cn> <newname>: Renames user cn with newname"));
 function commandRename(ci, args){
     if(ci.privilege < Privilege.PRIV_MASTER)
