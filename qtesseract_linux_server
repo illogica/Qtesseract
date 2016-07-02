@@ -10,7 +10,7 @@ TESS_BIN=${TESS_DATA}/bin_unix
 # TESS_OPTIONS contains any command line options you would like to start Tesseract with.
 #TESS_OPTIONS=""
 #TESS_OPTIONS="-u${HOME}/.tesseract -gserver-log.txt -d"
-TESS_OPTIONS="-gserver-log.txt -d"
+TESS_OPTIONS="-gserver-log.txt -d -platform offscreen"
 
 # SYSTEM_NAME should be set to the name of your operating system.
 #SYSTEM_NAME=Linux

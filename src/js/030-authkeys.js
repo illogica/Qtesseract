@@ -19,7 +19,6 @@ function Authkey(name, domain, pubkey, privilege) {
 var authkeys = [];
 
 //to add keys, just duplicate the following line:
-//thkeys.push(new Authkey("Gustavo", "gustavo", "-1cc253692d7b69d6c8b5ab737970b4ebdaf19679d7c07c9d", "a"));
 authkeys.push(new Authkey("GustavoLapasta", "gustavo", "+0f4edc6a81315c60974f532ddda9bbcf410a47559ffdd233", "a"));
 authkeys.push(new Authkey("Shag", "gustavo", "-4751bf9630525b622053c10d69690860544dc877265250bc", "m"));
 authkeys.push(new Authkey("Star", "gustavo", "+de96f3e0ba5bcb692c86cbb06a695fc3db60debc59ec8355", "m"));
