@@ -6,7 +6,8 @@ Qserver::Qserver(QObject *parent) : QObject(parent)
     eventsMap = new ServerEventsMap();
 
     srv = js.newQObject(this);
-    js.installExtensions(QJSEngine::ConsoleExtension | QJSEngine::GarbageCollectionExtension);
+    //the following line requires Qt5.6.x
+    //js.installExtensions(QJSEngine::ConsoleExtension | QJSEngine::GarbageCollectionExtension);
     js.globalObject().setProperty("server", srv);
 
     jsLoader = new JSLoader(this);
