@@ -250,7 +250,8 @@ DISTFILES += \
     src/js/054-commandmaxclients.js \
     src/js/055-commandquit.js \
     src/js/056-commandrename.js \
-    config/server-init.cfg
+    config/server-init.cfg \
+    qtesseract_linux_server
 
 
 
