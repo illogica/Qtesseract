@@ -249,7 +249,8 @@ DISTFILES += \
     src/js/030-authkeys.js \
     src/js/054-commandmaxclients.js \
     src/js/055-commandquit.js \
-    src/js/056-commandrename.js
+    src/js/056-commandrename.js \
+    config/server-init.cfg
 
 
 
