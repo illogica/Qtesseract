@@ -3006,14 +3006,11 @@ namespace server
                 capsule << QString(text);
                 if (qserver->runEventHooks(N_TEXT, capsule)) break;
 
-                clientinfo *cm = cq; //QUEUE_AI;
-                if(cm && (!cm->local || demorecord || hasnonlocalclients()))
-                    while(curmsg<p.length())
-                        cm->messages.add(p.buf[curmsg++]);
-                //QUEUE_MSG;
-
+                QUEUE_AI;
+                QUEUE_MSG;
+                getstring(text, p);
                 filtertext(text, text, true, true);
-                sendstring(text, cm->messages); //QUEUE_STR(text);
+                QUEUE_STR(text);
                 if(isdedicatedserver() && cq) logoutf("%s: %s", colorname(cq), text);
                 break;
             }
