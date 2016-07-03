@@ -162,9 +162,9 @@ static inline void sendstring_(const char *t, T &p)
     while(*t) putint(p, *t++);
     putint(p, 0);
 }
-void sendstring(const char *t, ucharbuf &p) { sendstring_(t, p); }
-void sendstring(const char *t, packetbuf &p) { sendstring_(t, p); }
-void sendstring(const char *t, vector<uchar> &p) { sendstring_(t, p); }
+void sendstring(const char *t, ucharbuf &p) { /*logoutf(t);*/ sendstring_(t, p); }
+void sendstring(const char *t, packetbuf &p) { /*logoutf(t);*/ sendstring_(t, p); }
+void sendstring(const char *t, vector<uchar> &p) { /*logoutf(t);*/ sendstring_(t, p); }
 
 void getstring(char *text, ucharbuf &p, size_t len)
 {

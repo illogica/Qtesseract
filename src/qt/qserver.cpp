@@ -147,8 +147,8 @@ void Qserver::rename(int cn, QString newname)
     string s;
     strcpy(s, newname.toLocal8Bit().data());
 
-    //putuint(ci->messages, N_SWITCHNAME);
-    //sendstring(s, ci->messages);
+    putuint(ci->messages, N_SWITCHNAME);
+    sendstring(s, ci->messages);
 
     vector<uchar> renamemsg;
     putuint(renamemsg, N_SWITCHNAME);

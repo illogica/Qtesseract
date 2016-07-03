@@ -8,6 +8,7 @@
 
 server.registerHook(Events.N_TEXT, "jsCommands");
 
+
 function Commands(){
     this.commands = []
 }

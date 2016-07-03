@@ -3001,14 +3001,16 @@ namespace server
             {
                 getstring(text, p);
 
-                QJSValueList capsule;
-                capsule << qserver->js.newQObject(ci);
-                capsule << QString(text);
-                if (qserver->runEventHooks(N_TEXT, capsule)) break;
+                if(qserver->hasEvent(N_TEXT)){
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(ci);
+                    capsule << QString(text);
+                    if (qserver->runEventHooks(N_TEXT, capsule)) break;
+                }
 
                 QUEUE_AI;
-                QUEUE_MSG;
-                getstring(text, p);
+
+                QUEUE_INT(N_TEXT)
                 filtertext(text, text, true, true);
                 QUEUE_STR(text);
                 if(isdedicatedserver() && cq) logoutf("%s: %s", colorname(cq), text);
