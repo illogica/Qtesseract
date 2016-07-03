@@ -6,6 +6,7 @@
 #include <QJSEngine>
 #include <QHash>
 #include <QList>
+#include <game.h>
 #include "eventdata.h"
 #include "jsloader.h"
 #include "servereventsmap.h"
@@ -25,6 +26,14 @@ namespace server{
     //externs
     extern int gamemillis, nextexceeded;
     extern int mastermode, mastermask;
+    extern bool notgotitems;        // true when map has changed and waiting for clients to send item
+    extern int gamemode;
+    extern int gamemillis;
+    extern int gamelimit;
+    extern int nextexceeded;
+    extern int gamespeed;
+    extern bool gamepaused;
+    extern bool shouldstep;
     extern string smapname;
     extern vector<uint> allowedips;
     extern vector<ban> bannedips;
@@ -81,7 +90,6 @@ class Qserver : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(int qtestInt MEMBER testInt)
 public:
     explicit Qserver(QObject *parent = 0);
     ~Qserver();
@@ -91,7 +99,6 @@ public:
 
     QJSEngine js;
     QJSValue srv;
-    int testInt = 5;
 
 signals:
 
@@ -122,6 +129,15 @@ public slots:
     void quit();
     void maxclients(int n);
     QJSValue getclientinfo(int i);
+    bool isCtf();
+    bool isTeammode();
+    bool isOvertime();
+    bool isRail();
+    bool isPulse();
+    bool isDemo();
+    bool isLobby();
+    bool isTimed();
+    bool isBotmode();
 
     //SVAR
     QString serverauth();

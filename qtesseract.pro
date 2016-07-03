@@ -251,7 +251,8 @@ DISTFILES += \
     src/js/055-commandquit.js \
     src/js/056-commandrename.js \
     config/server-init.cfg \
-    qtesseract_linux_server
+    qtesseract_linux_server \
+    src/js/101-rugby.js
 
 
 

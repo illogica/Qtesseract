@@ -210,6 +210,24 @@ void Qserver::maxclients(int n){::maxclients = n;}
 
 QJSValue Qserver::getclientinfo(int i){ return js.newQObject((server::clientinfo*)(::getclientinfo(i))); }
 
+bool Qserver::isCtf(){int gamemode = server::gamemode; return m_ctf;}
+
+bool Qserver::isTeammode(){int gamemode = server::gamemode; return m_teammode;}
+
+bool Qserver::isOvertime(){int gamemode = server::gamemode; return m_overtime;}
+
+bool Qserver::isRail(){int gamemode = server::gamemode; return m_rail;}
+
+bool Qserver::isPulse(){int gamemode = server::gamemode; return m_pulse;}
+
+bool Qserver::isDemo(){int gamemode = server::gamemode; return m_demo;}
+
+bool Qserver::isLobby(){int gamemode = server::gamemode; return m_lobby;}
+
+bool Qserver::isTimed(){int gamemode = server::gamemode; return m_timed;}
+
+bool Qserver::isBotmode(){int gamemode = server::gamemode; return m_botmode;}
+
 QString Qserver::serverauth() { return QString::fromLocal8Bit(server::serverauth);}
 
 

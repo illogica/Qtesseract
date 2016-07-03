@@ -177,7 +177,9 @@ enum
 
 enum{       //functions hooks
     F_CONNECTEDPRE = 200,
-    F_CONNECTEDPOST = 201
+    F_CONNECTEDPOST = 201,
+    F_DODAMAGE = 202,
+    F_RUGBY = 203
 };
 
 

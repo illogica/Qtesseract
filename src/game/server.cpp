@@ -1773,6 +1773,32 @@ namespace server
 
     void dodamage(clientinfo *target, clientinfo *actor, int damage, int atk, const vec &hitpush = vec(0, 0, 0))
     {
+        if(qserver->hasEvent(F_DODAMAGE)){
+            QJSValueList capsule;
+            capsule << qserver->js.newQObject(target);
+            capsule << qserver->js.newQObject(actor);
+            capsule << damage;
+            capsule << atk;
+            if (qserver->runEventHooks(F_DODAMAGE, capsule)) return;
+        }
+
+        //Rugby mode
+        if(target->team == actor->team && m_ctf /*&& m_rail*/){
+            bool hasflag = false;
+            for(int i=0; i<ctfmode.flags.length(); i++){
+                if(ctfmode.flags[i].owner == actor->clientnum) {
+                    hasflag = true;
+                    ctfmode.returnflag(i);
+                    ctfmode.takeflag(target, i, ctfmode.flags[i].version);
+                    QJSValueList capsule;
+                    capsule << qserver->js.newQObject(target);
+                    capsule << qserver->js.newQObject(actor);
+                    qserver->runEventHooks(F_RUGBY, capsule);
+                    return;
+                }
+            }
+        }
+
         servstate &ts = target->state;
         ts.dodamage(damage);
         if(target!=actor && !isteam(target->team, actor->team)) actor->state.damage += damage;

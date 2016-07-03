@@ -7,10 +7,12 @@
 server.maxclients(16);
 
 var motd = "Welcome to Pastaland! Type \f4#help\f7 for more cool stuff, come visit \f2Pastaland.ovh\f7 for more info";
+var motd2 = "rCTF and pCTF have \f2rugby mode\f7: when you have the flag, shoot your teammate to pass it!";
 
 server.registerHook(FunctionEvent.F_CONNECTEDPOST, "onPostConnected");
 function onPostConnected(ci, eventdata){
     server.sendplayermsg(ci.clientnum, motd);
+    server.sendplayermsg(ci.clientnum, motd2);
 }
 
 
